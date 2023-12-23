@@ -12,7 +12,7 @@ env:
   S3_BUCKET_NAME: gangsan21-registered-receipt-ocr-s3-bucket
   CODE_DEPLOY_APPLICATION_NAME: Gangsan21-registered-receipt-ocr
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: Gangsan21-registered-receipt-ocr-DeployGroup
-
+  
 permissions:
   contents: read
 
