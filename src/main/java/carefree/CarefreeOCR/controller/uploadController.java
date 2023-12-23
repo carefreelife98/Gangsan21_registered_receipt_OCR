@@ -108,7 +108,7 @@ public class uploadController {
             toGSheet.add(temp);
         }
 
-        GoogleSheet.updateValues("", "A1:F1000", "RAW", toGSheet);
+        GoogleSheet.updateValues("1UADUNDLfmaQLJ1woHzVs9sq2HyScmfLla4lKvjaAwy8", "A1:F1000", "RAW", toGSheet);
 
         return "ocr-result"; // OCR 결과를 표시하는 HTML 템플릿 이름 반환
     }

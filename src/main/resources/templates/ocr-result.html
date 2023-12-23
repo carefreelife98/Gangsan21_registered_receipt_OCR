@@ -8,39 +8,12 @@
 <body>
   <h1>CarefreeLife's 강산21 M&A OCR 결과</h1>
     <ul>
+      <form action="/upload-form" method="get">
+        <button type="submit">다시 하기</button>
+      </form>
       <form id="myForm">
         <li th:each="result : ${ocrResult}" th:text="${result}"></li>
-<!--        <input type="submit" value="Google Sheets에 전송">-->
       </form>
     </ul>
 </body>
 </html>
-<!--  <script>-->
-<!--    document.getElementById("myForm").addEventListener("submit", function(e) {-->
-<!--      e.preventDefault();-->
-<!--      var formData = new FormData(e.target);-->
-<!--      var data = formData.get("ocrResult");-->
-
-<!--      fetch('https://script.google.com/macros/s/AKfycbyGd6n_nYiprOr8NUr8wBGcp13D0VIo3Pm5FcStukbd-zFSmGi1w2uqdEL_-udixbpKLQ/exec', {-->
-<!--        method: 'POST',-->
-<!--        body: formData, //Argument type { data: FormDataEntryValue } is not assignable to parameter type-->
-<!--        headers: {-->
-<!--          'Content-Type': 'application/x-www-form-urlencoded',-->
-<!--        }-->
-<!--      })-->
-<!--      .then(response => {-->
-<!--        if (!response.ok) {-->
-<!--          throw new Error('Network response was not ok');-->
-<!--        }-->
-<!--        return response.text();-->
-<!--      })-->
-<!--      .then(data => { // Unused parameter data-->
-<!--        alert("데이터가 성공적으로 전송되었습니다.");-->
-<!--      })-->
-<!--      .catch(error => {-->
-<!--        console.error('There has been a problem with your fetch operation:', error);-->
-<!--        alert(error);-->
-<!--      });-->
-<!--    });-->
-<!--  </script>-->
-
