@@ -13,6 +13,7 @@ env:
   CODE_DEPLOY_APPLICATION_NAME: Gangsan21-registered-receipt-ocr
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: Gangsan21-registered-receipt-ocr-DeployGroup
   PROPERTIES: ${{ secrets.APPLICATIONPROPERTIES }}
+  JSON: ${{ secrets.GOOGLE_USER_JSON }}
   
 permissions:
   contents: read
@@ -29,7 +30,7 @@ jobs:
       uses: actions/checkout@v3
 
     # (2) JDK 17 세팅
-    - name: Set up JDK 17 & Add application.properties from Github secrets
+    - name: Set up JDK 17 & Add application.properties / JSON from Github secrets
       uses: actions/setup-java@v3
       with:
         distribution: 'adopt'
@@ -38,10 +39,18 @@ jobs:
     - uses: actions/checkout@v2
     - run: touch ./src/main/resources/application.properties
     - run: echo "${{ env.PROPERTIES }}" > ./src/main/resources/application.properties
+    - run: touch gangsan21-ocr-6e01aae86a2f.json
+    - run: echo "${{ env.JSON }}" > gangsan21-ocr-6e01aae86a2f.json
+    
     - uses: actions/upload-artifact@v2
       with:
         name: application.properties
         path: ./src/main/resources/application.properties
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: gangsan21-ocr-6e01aae86a2f.json
+        path: gangsan21-ocr-6e01aae86a2f.json
     
     - name: Run chmod to make gradlew executable
       run: chmod +x ./gradlew
