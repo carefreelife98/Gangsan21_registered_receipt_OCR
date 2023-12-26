@@ -37,15 +37,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr th:each="result : ${ocrResult}" th:text="${result}">
-            <td th:text="${result[0]}">NULL</td>
-            <td th:text="${result[1]}">NULL</td>
-            <td th:text="${result[2]}">NULL</td>
-            <td th:text="${result[3]}">NULL</td>
-            <td th:text="${result[4]}">NULL</td>
-            <td th:text="${result[5]}">NULL</td>
-            <td th:text="${result[6]}">NULL</td>
-          </tr>
+          <tr th:each="result : ${ocrResult}" th:text="${result}"></tr>
         </tbody>
       </table>
     </div>
