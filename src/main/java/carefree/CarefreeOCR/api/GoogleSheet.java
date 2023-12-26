@@ -51,25 +51,13 @@ public class GoogleSheet {
                 .build();
 
         // 시트를 추가
-        SheetProperties addedSheetProperties = addSheet(service, sheetTitle, spreadsheetId);
+//        SheetProperties addedSheetProperties = addSheet(service, sheetTitle, spreadsheetId);
 
-        // 추가된 시트의 ID 얻기
-        Integer addedSheetId = addedSheetProperties.getSheetId();
-
-//        // 확인할 범위를 얻어옴
-//        String dataRange = getSheetDataRange(service, spreadsheetId, addedSheetId);
-//
-//        // 데이터가 있는 경우 범위를 업데이트하고 값 입력
-//        if (dataRange != null && !dataRange.isEmpty()) {
-//            range = dataRange + "," + range;
-//        }
-
-//        UpdateValuesResponse result = null;
         try {
             // Updates the values in the specified range.
             ValueRange body = new ValueRange()
                     .setValues(values);
-            UpdateValuesResponse result = service.spreadsheets().values().update(spreadsheetId, addedSheetId.toString() + "!" + range, body)
+            UpdateValuesResponse result = service.spreadsheets().values().update(spreadsheetId, sheetTitle + "!" + range, body)
                     .setValueInputOption(valueInputOption)
                     .execute();
             System.out.printf("%d cells updated.", result.getUpdatedCells());
@@ -84,29 +72,6 @@ public class GoogleSheet {
         }
         return null;
     }
-
-//    private static String getSheetDataRange(Sheets service, String spreadsheetId, int sheetId) throws IOException {
-//        String range = sheetId + "!A:Z"; // Adjust the range as needed
-//        try {
-//            ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
-//            List<List<Object>> values = response.getValues();
-//            if (values == null || values.isEmpty()) {
-//                return null;
-//            } else {
-//                int numRows = values.size();
-//                int numCols = values.get(0).size();
-//                return String.format("%d:%d", numRows + 1, numCols);
-//            }
-//        } catch (GoogleJsonResponseException e) {
-//            GoogleJsonError error = e.getDetails();
-//            if (error.getCode() == 404) {
-//                System.out.printf("Spreadsheet not found with id '%s'.\n", spreadsheetId);
-//            } else {
-//                throw e;
-//            }
-//        }
-//        return null;
-//    }
 
     public static SheetProperties addSheet(Sheets service, String sheetTitle, String spreadsheetId) throws IOException {
         // 시트가 이미 존재하는지 확인
