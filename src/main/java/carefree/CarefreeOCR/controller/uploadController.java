@@ -59,8 +59,18 @@ public class uploadController {
             // 등기 번호 이면,
             if (text.matches("\\d{5}-\\d{4}-\\d{4}")) {
                 total ++;
+                // 총 개수 Numbering
                 afterFmt.add("[" + total + "]");
+
+                // 등기 번호 저장
                 afterFmt.add(text);
+
+                // 정규화 된 등기 번호를 사용한 각각의 우체국 등기 조회 서비스 링크.
+                String findPostUrl =
+                        "https://service.epost.go.kr/trace.RetrieveDomRigiTraceList.comm?sid1="
+                                + text.replaceAll("[^0-9]", "")
+                                + "&displayHeader=";
+                afterFmt.add(findPostUrl);
 
                 // 가격 skip, 우편 번호 저장
                 iter.next();
@@ -101,7 +111,7 @@ public class uploadController {
         log.info("size: " + afterFmt.size());
         for (int i = 0; i < afterFmt.size(); i++) {
             List<Object> temp = new ArrayList<>();
-            for (int j = 0; j < 6 && idx < afterFmt.size(); j++) {
+            for (int j = 0; j < 7 && idx < afterFmt.size(); j++) {
                 temp.add(afterFmt.get(idx));
                 idx ++;
             }

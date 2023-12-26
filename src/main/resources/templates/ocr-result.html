@@ -7,10 +7,15 @@
 </head>
 <body>
   <h1>CarefreeLife's 강산21 M&A OCR 결과</h1>
+    <a href="https://docs.google.com/spreadsheets/d/1UADUNDLfmaQLJ1woHzVs9sq2HyScmfLla4lKvjaAwy8/edit#gid=0">연동된 Google Sheet 으로 이동</a>
+    <br><br>
     <ul>
       <form action="/upload-form" method="get">
         <button type="submit">다시 하기</button>
       </form>
+    </ul>
+    <br><br>
+    <ul>
       <form id="myForm">
         <li th:each="result : ${ocrResult}" th:text="${result}"></li>
       </form>
