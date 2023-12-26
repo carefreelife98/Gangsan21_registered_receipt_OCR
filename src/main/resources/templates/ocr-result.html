@@ -24,29 +24,8 @@
   <hr class="my-4">
   <div>
     <table class="table">
-      <thead>
-      <tr>
-        <th>NO.</th>
-        <th>등기 번호</th>
-        <th>등기 확인 링크</th>
-        <th>우편 번호</th>
-        <th>법인 명</th>
-        <th>받는 분</th>
-        <th>주소</th>
-      </tr>
-      </thead>
-      <tbody>
       <!-- Iterate over ocrResult and bind each property to the corresponding column -->
-      <tr th:each="result, rowStat : ${ocrResult}">
-        <td th:text="${rowStat.index + 1}">1</td>
-        <td th:text="${result[rowStat.index + 2]}">[Registration Number]</td>
-        <td th:text="${result[rowStat.index + 3]}">[Registration Link]</td>
-        <td th:text="${result[rowStat.index + 4]}">[Postal Code]</td>
-        <td th:text="${result[rowStat.index + 5]}">[Corporate Name]</td>
-        <td th:text="${result[rowStat.index + 6]}">[Recipient]</td>
-        <td th:text="${result[rowStat.index + 7]}">[Address]</td>
-      </tr>
-      </tbody>
+      <tr th:each="result: ${ocrResult}"></tr>
     </table>
   </div>
 </div>
