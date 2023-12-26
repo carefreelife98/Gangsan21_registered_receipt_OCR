@@ -56,6 +56,13 @@ public class GoogleSheet {
         // 추가된 시트의 ID 얻기
         Integer addedSheetId = addedSheetProperties.getSheetId();
 
+        // 확인할 범위를 얻어옴
+        String dataRange = getSheetDataRange(service, spreadsheetId, addedSheetId);
+
+        // 데이터가 있는 경우 범위를 업데이트하고 값 입력
+        if (dataRange != null && !dataRange.isEmpty()) {
+            range = dataRange + "," + range;
+        }
 
 //        UpdateValuesResponse result = null;
         try {
@@ -78,6 +85,29 @@ public class GoogleSheet {
         return null;
     }
 
+    private static String getSheetDataRange(Sheets service, String spreadsheetId, int sheetId) throws IOException {
+        String range = sheetId + "!A:Z"; // Adjust the range as needed
+        try {
+            ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
+            List<List<Object>> values = response.getValues();
+            if (values == null || values.isEmpty()) {
+                return null;
+            } else {
+                int numRows = values.size();
+                int numCols = values.get(0).size();
+                return String.format("%d:%d", numRows + 1, numCols);
+            }
+        } catch (GoogleJsonResponseException e) {
+            GoogleJsonError error = e.getDetails();
+            if (error.getCode() == 404) {
+                System.out.printf("Spreadsheet not found with id '%s'.\n", spreadsheetId);
+            } else {
+                throw e;
+            }
+        }
+        return null;
+    }
+
     public static SheetProperties addSheet(Sheets service, String sheetTitle, String spreadsheetId) throws IOException {
         // 시트를 추가하기 위한 요청 생성
         AddSheetRequest addSheetRequest = new AddSheetRequest();
@@ -87,15 +117,11 @@ public class GoogleSheet {
 
         // 스프레드시트 업데이트를 위한 요청 생성
         BatchUpdateSpreadsheetRequest updateRequest = new BatchUpdateSpreadsheetRequest();
-//        UpdateSheetPropertiesRequest updateSheetRequest = new UpdateSheetPropertiesRequest();
-//        updateSheetRequest.setProperties(sheetProperties);
-//        updateSheetRequest.setFields("*");
 
         // 시트 추가 요청을 업데이트 요청에 추가
         updateRequest.setRequests(Collections.singletonList(
                 new Request()
                         .setAddSheet(addSheetRequest)
-//                        .setUpdateSheetProperties(updateSheetRequest)
         ));
 
         // 업데이트 요청을 Google Sheets API에 전송
