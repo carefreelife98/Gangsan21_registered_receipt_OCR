@@ -27,6 +27,9 @@ public class GoogleSheet {
         );
     }
 
+    // UpdateValuesResponse : 기존 셀에 덮어 쓰기
+    // AppendValuesResponse : 기존 셀 끝에 이어 쓰기
+    // 데이터 반환 타입만 변경해주면 기능 변경 가능.
     public static AppendValuesResponse updateValues(String sheetTitle,
                                                     String spreadsheetId,
                                                     String range,

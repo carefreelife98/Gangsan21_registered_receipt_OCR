@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -28,6 +29,26 @@ public class uploadController {
 //    private final GoogleSheet gSheet;
     ArrayList<String> afterFmt = new ArrayList<>();
     String date = "";
+    private static final String[] REGIONS = {
+            "서울특별시",
+            "부산광역시",
+            "대구광역시",
+            "인천광역시",
+            "광주광역시",
+            "대전광역시",
+            "울산광역시",
+            "세종특별자치시",
+            "경기도",
+            "강원특별자치도",
+            "충청북도",
+            "충청남도",
+            "전라북도",
+            "전라남도",
+            "경상북도",
+            "경상남도",
+            "제주특별자치도"
+    };
+
 
     // 파일 업로드 폼을 보여주기 위한 GET 요청 핸들러 메서드
     @GetMapping("/upload-form")
@@ -94,11 +115,15 @@ public class uploadController {
 
                 // 수신인 저장
                 text = iter.next();
-                if(text.length() <= 2) {
-                    text = text.concat(iter.next());
+                if (Arrays.asList(REGIONS).contains(text)) {
+                    afterFmt.add("-");
                 }
-
-                afterFmt.add(text);
+                else {
+                    if(text.length() <= 2) {
+                        text = text.concat(iter.next());
+                    }
+                    afterFmt.add(text);
+                }
 
                 // 주소 저장
                 StringBuilder adr = new StringBuilder();
