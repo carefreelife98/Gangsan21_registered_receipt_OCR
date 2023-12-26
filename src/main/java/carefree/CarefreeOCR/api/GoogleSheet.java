@@ -6,8 +6,7 @@ import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.model.UpdateValuesResponse;
-import com.google.api.services.sheets.v4.model.ValueRange;
+import com.google.api.services.sheets.v4.model.*;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import lombok.extern.slf4j.Slf4j;
@@ -31,14 +30,12 @@ public class GoogleSheet {
      * @return spreadsheet with updated values
      * @throws IOException - if credentials file not found.
      */
-    public static UpdateValuesResponse updateValues(String spreadsheetId,
+    public static UpdateValuesResponse updateValues(String sheetTitle,
+                                                    String spreadsheetId,
                                                     String range,
                                                     String valueInputOption,
                                                     List<List<Object>> values)
             throws IOException {
-        /* Load pre-authorized user credentials from the environment.
-           TODO(developer) - See https://developers.google.com/identity for
-            guides on implementing OAuth2 for your application. */
 //        GoogleCredentials credentials = GoogleCredentials.getApplicationDefault()
 //                .createScoped(Collections.singleton(SheetsScopes.SPREADSHEETS));
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(
@@ -53,6 +50,9 @@ public class GoogleSheet {
                 .setApplicationName("Sheets samples")
                 .build();
 
+        // 시트를 추가
+        addSheet(service, sheetTitle, spreadsheetId);
+
         UpdateValuesResponse result = null;
         try {
             // Updates the values in the specified range.
@@ -63,7 +63,6 @@ public class GoogleSheet {
                     .execute();
             System.out.printf("%d cells updated.", result.getUpdatedCells());
         } catch (GoogleJsonResponseException e) {
-            // TODO(developer) - handle error appropriately
             GoogleJsonError error = e.getDetails();
             if (error.getCode() == 404) {
                 System.out.printf("Spreadsheet not found with id '%s'.\n", spreadsheetId);
@@ -72,5 +71,40 @@ public class GoogleSheet {
             }
         }
         return result;
+    }
+
+    public static void addSheet(Sheets service, String sheetTitle, String spreadsheetId) throws IOException {
+        // 시트를 추가하기 위한 요청 생성
+        AddSheetRequest addSheetRequest = new AddSheetRequest();
+        SheetProperties sheetProperties = new SheetProperties();
+        sheetProperties.setTitle(sheetTitle);
+        addSheetRequest.setProperties(sheetProperties);
+
+        // 스프레드시트 업데이트를 위한 요청 생성
+        BatchUpdateSpreadsheetRequest updateRequest = new BatchUpdateSpreadsheetRequest();
+        UpdateSheetPropertiesRequest updateSheetRequest = new UpdateSheetPropertiesRequest();
+        updateSheetRequest.setProperties(sheetProperties);
+        updateSheetRequest.setFields("title");
+
+        // 시트 추가 요청을 업데이트 요청에 추가
+        updateRequest.setRequests(Collections.singletonList(
+                new Request()
+                        .setAddSheet(addSheetRequest)
+                        .setUpdateSheetProperties(updateSheetRequest)
+        ));
+
+        service.spreadsheets().batchUpdate(spreadsheetId, updateRequest).execute();
+        // 업데이트 요청을 Google Sheets API에 전송
+//        HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(
+//                GoogleCredentials.fromStream(new FileInputStream("/home/ec2-user/app/gangsan21-ocr-6e01aae86a2f.json"))
+//                        .createScoped(Collections.singletonList("https://www.googleapis.com/auth/spreadsheets"))
+//        );
+//
+//        // Create the sheets API client
+//        Sheets service = new Sheets.Builder(new NetHttpTransport(),
+//                GsonFactory.getDefaultInstance(),
+//                requestInitializer)
+//                .setApplicationName("Sheets samples")
+//                .build();
     }
 }

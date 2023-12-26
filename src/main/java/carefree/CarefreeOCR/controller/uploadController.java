@@ -25,8 +25,9 @@ public class uploadController {
     @Value("${naver.service.secretKey}")
     private String secretKey;
     private final NaverOcrApi naverApi;
-    private final GoogleSheet gSheet;
+//    private final GoogleSheet gSheet;
     ArrayList<String> afterFmt = new ArrayList<>();
+    String date = "";
 
     // 파일 업로드 폼을 보여주기 위한 GET 요청 핸들러 메서드
     @GetMapping("/upload-form")
@@ -55,6 +56,13 @@ public class uploadController {
         int total = 0;
         while (iter.hasNext()) {
             String text = iter.next();
+
+            // 날짜 확인
+            if (text.matches("\\d{4}-\\d{2}-\\d{2}")) {
+//                String date = text.replaceAll("[^0-9]", "");
+//                iDate = Integer.parseInt(date);
+                date = text;
+            }
 
             // 등기 번호 이면,
             if (text.matches("\\d{5}-\\d{4}-\\d{4}")) {
@@ -117,9 +125,7 @@ public class uploadController {
             }
             toGSheet.add(temp);
         }
-
-        GoogleSheet.updateValues("1UADUNDLfmaQLJ1woHzVs9sq2HyScmfLla4lKvjaAwy8", "A1:G1000", "RAW", toGSheet);
-
+        GoogleSheet.updateValues(date, "1UADUNDLfmaQLJ1woHzVs9sq2HyScmfLla4lKvjaAwy8", "A1:G1000", "RAW", toGSheet);
         return "ocr-result"; // OCR 결과를 표시하는 HTML 템플릿 이름 반환
     }
 }
