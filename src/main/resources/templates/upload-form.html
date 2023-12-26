@@ -1,23 +1,42 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--&lt;!&ndash;    <meta name="viewport" content="width=device-width, initial-scale=1.0">&ndash;&gt;-->
+
+<!--    <title>Carefree Image Upload and OCR by Naver Clova OCR</title>-->
+<!--</head>-->
+
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Carefree Image Upload and OCR by Naver Clova OCR</title>
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <title>Carefree Life's OCR Result</title>
 </head>
 <body>
-<h1>CarefreeLife's Image Upload and OCR by Naver Clova OCR</h1>
-    <img src="image/gangsan21_logo.png" alt="gangsan21_logo">
-<h2>주의 !! 다음과 같은 형식의 등기 번호가 이미지에 존재해야 인식 가능합니다!!</h2>
-<h3>
-    1. 등기 번호 : (숫자 5자리)-(숫자 네 자리)-(숫자 네 자리) <br>
-    2. "익일특급" / "통상" Text 발견 시 다음 등기 번호를 찾습니다. <br>
-    3. "합계" Text 발견 시 종료합니다. <br>
-</h3>
-<form action="/uploadAndOcr" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" accept=".jpg, .jpeg, .png">
-    <button type="submit">Upload and OCR</button>
-</form>
+    <div class="container" style="max-width: 600px">
+        <div class="py-5 text-center">
+            <h1>CarefreeLife's 강산21 M&A OCR</h1>
+        </div>
+        <img src="image/gangsan21_logo.png" alt="gangsan21_logo">
+        <div class="row">
+            <div class="col">
+                <form action="/uploadAndOcr" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" accept=".jpg, .jpeg, .png">
+                    <button type="submit">Upload and OCR</button>
+                </form>
+            </div>
+        </div>
+        <h2>주의 !! 다음과 같은 형식의 등기 번호가 이미지에 존재해야 인식 가능합니다!!</h2>
+        <h3>
+            1. 등기 번호 : (숫자 5자리)-(숫자 네 자리)-(숫자 네 자리) <br>
+            2. "익일특급" / "통상" Text 발견 시 다음 등기 번호를 찾습니다. <br>
+            3. "합계" Text 발견 시 종료합니다. <br>
+            4. 깔끔하게 찍힌 사진 / Scan 파일 사용 시 더욱 세밀한 OCR 이 가능합니다. <br>
+        </h3>
+    </div>
 </body>
 </html>

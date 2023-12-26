@@ -2,23 +2,53 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
   <title>Carefree Life's OCR Result</title>
 </head>
 <body>
-  <h1>CarefreeLife's 강산21 M&A OCR 결과</h1>
+  <div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+      <h1>CarefreeLife's 강산21 M&A OCR 결과</h1>
+    </div>
+    <br><br>
     <a href="https://docs.google.com/spreadsheets/d/1UADUNDLfmaQLJ1woHzVs9sq2HyScmfLla4lKvjaAwy8/edit#gid=0">연동된 Google Sheet 으로 이동</a>
+    <div class="row">
+      <div class="col">
+        <form action="/upload-form" method="get">
+          <button type="submit">다시 하기</button>
+        </form>
+      </div>
+    </div>
     <br><br>
-    <ul>
-      <form action="/upload-form" method="get">
-        <button type="submit">다시 하기</button>
-      </form>
-    </ul>
-    <br><br>
-    <ul>
-      <form id="myForm">
-        <li th:each="result : ${ocrResult}" th:text="${result}"></li>
-      </form>
-    </ul>
+    <hr class="my-4">
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>NO.</th>
+            <th>등기 번호</th>
+            <th>등기 확인 링크</th>
+            <th>우편 번호</th>
+            <th>법인 명</th>
+            <th>받는 분</th>
+            <th>주소</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="result : ${ocrResult}" th:text="${result}">
+            <td th:text="${result[0]}">NULL</td>
+            <td th:text="${result[1]}">NULL</td>
+            <td th:text="${result[2]}">NULL</td>
+            <td th:text="${result[3]}">NULL</td>
+            <td th:text="${result[4]}">NULL</td>
+            <td th:text="${result[5]}">NULL</td>
+            <td th:text="${result[6]}">NULL</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </body>
 </html>
