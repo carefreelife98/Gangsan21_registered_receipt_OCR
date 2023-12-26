@@ -84,7 +84,7 @@ public class GoogleSheet {
         BatchUpdateSpreadsheetRequest updateRequest = new BatchUpdateSpreadsheetRequest();
         UpdateSheetPropertiesRequest updateSheetRequest = new UpdateSheetPropertiesRequest();
         updateSheetRequest.setProperties(sheetProperties);
-        updateSheetRequest.setFields("title");
+        updateSheetRequest.setFields("*");
 
         // 시트 추가 요청을 업데이트 요청에 추가
         updateRequest.setRequests(Collections.singletonList(
