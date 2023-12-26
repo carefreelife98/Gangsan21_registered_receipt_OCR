@@ -117,6 +117,7 @@ public class uploadController {
                 text = iter.next();
                 if (Arrays.asList(REGIONS).contains(text)) {
                     afterFmt.add("-");
+                    iter.previous();
                 }
                 else {
                     if(text.length() <= 2) {
