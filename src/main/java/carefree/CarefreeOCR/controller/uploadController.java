@@ -48,6 +48,10 @@ public class uploadController {
         File tempFile = File.createTempFile("temp", file.getOriginalFilename());
         file.transferTo(tempFile);
 
+        // 이전 실행 내역 초기화
+        if (!afterFmt.isEmpty()) {
+            afterFmt.clear();
+        }
         List<String> result = naverApi.callApi("POST", tempFile.getPath(), naverSecretKey, "jpeg");
 
         tempFile.delete(); // 임시 파일 삭제
