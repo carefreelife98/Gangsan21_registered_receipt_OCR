@@ -51,17 +51,22 @@ public class GoogleSheet {
                 .build();
 
         // 시트를 추가
-        addSheet(service, sheetTitle, spreadsheetId);
+        SheetProperties addedSheetProperties = addSheet(service, sheetTitle, spreadsheetId);
 
-        UpdateValuesResponse result = null;
+        // 추가된 시트의 ID 얻기
+        Integer addedSheetId = addedSheetProperties.getSheetId();
+
+
+//        UpdateValuesResponse result = null;
         try {
             // Updates the values in the specified range.
             ValueRange body = new ValueRange()
                     .setValues(values);
-            result = service.spreadsheets().values().update(spreadsheetId, range, body)
+            UpdateValuesResponse result = service.spreadsheets().values().update(spreadsheetId, addedSheetId.toString() + "!" + range, body)
                     .setValueInputOption(valueInputOption)
                     .execute();
             System.out.printf("%d cells updated.", result.getUpdatedCells());
+            return result;
         } catch (GoogleJsonResponseException e) {
             GoogleJsonError error = e.getDetails();
             if (error.getCode() == 404) {
@@ -70,10 +75,10 @@ public class GoogleSheet {
                 throw e;
             }
         }
-        return result;
+        return null;
     }
 
-    public static void addSheet(Sheets service, String sheetTitle, String spreadsheetId) throws IOException {
+    public static SheetProperties addSheet(Sheets service, String sheetTitle, String spreadsheetId) throws IOException {
         // 시트를 추가하기 위한 요청 생성
         AddSheetRequest addSheetRequest = new AddSheetRequest();
         SheetProperties sheetProperties = new SheetProperties();
@@ -95,5 +100,6 @@ public class GoogleSheet {
 
         // 업데이트 요청을 Google Sheets API에 전송
         service.spreadsheets().batchUpdate(spreadsheetId, updateRequest).execute();
+        return sheetProperties;
     }
 }
