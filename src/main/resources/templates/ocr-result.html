@@ -22,12 +22,11 @@
   </div>
   <br><br>
   <hr class="my-4">
-  <div>
-    <table class="table">
-      <!-- Iterate over ocrResult and bind each property to the corresponding column -->
-      <tr th:each="result: ${ocrResult}" th:text="${result}"></tr>
-    </table>
-  </div>
+  <ul>
+    <form id="myForm">
+      <li th:each="result : ${ocrResult}" th:text="${result}"></li>
+    </form>
+  </ul>
 </div>
 </body>
 </html>
