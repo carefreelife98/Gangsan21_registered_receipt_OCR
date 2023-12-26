@@ -82,29 +82,18 @@ public class GoogleSheet {
 
         // 스프레드시트 업데이트를 위한 요청 생성
         BatchUpdateSpreadsheetRequest updateRequest = new BatchUpdateSpreadsheetRequest();
-        UpdateSheetPropertiesRequest updateSheetRequest = new UpdateSheetPropertiesRequest();
-        updateSheetRequest.setProperties(sheetProperties);
+//        UpdateSheetPropertiesRequest updateSheetRequest = new UpdateSheetPropertiesRequest();
+//        updateSheetRequest.setProperties(sheetProperties);
 //        updateSheetRequest.setFields("*");
 
         // 시트 추가 요청을 업데이트 요청에 추가
         updateRequest.setRequests(Collections.singletonList(
                 new Request()
                         .setAddSheet(addSheetRequest)
-                        .setUpdateSheetProperties(updateSheetRequest)
+//                        .setUpdateSheetProperties(updateSheetRequest)
         ));
 
-        service.spreadsheets().batchUpdate(spreadsheetId, updateRequest).execute();
         // 업데이트 요청을 Google Sheets API에 전송
-//        HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(
-//                GoogleCredentials.fromStream(new FileInputStream("/home/ec2-user/app/gangsan21-ocr-6e01aae86a2f.json"))
-//                        .createScoped(Collections.singletonList("https://www.googleapis.com/auth/spreadsheets"))
-//        );
-//
-//        // Create the sheets API client
-//        Sheets service = new Sheets.Builder(new NetHttpTransport(),
-//                GsonFactory.getDefaultInstance(),
-//                requestInitializer)
-//                .setApplicationName("Sheets samples")
-//                .build();
+        service.spreadsheets().batchUpdate(spreadsheetId, updateRequest).execute();
     }
 }
