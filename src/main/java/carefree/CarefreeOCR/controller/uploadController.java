@@ -180,6 +180,20 @@ public class uploadController {
         // NCP Clova OCR API Call
         List<String> result = naverBusinessApi.callApiBusiness("POST", tempFile.getPath(), naverSecretKey, "jpeg");
         tempFile.delete(); // 임시 파일 삭제
+
+        // Iterator 를 사용하여 OCR 결과를 순회.
+        ListIterator<String> iter = result.listIterator();
+        String phoneNumberPattern = "(.*)\\d{3}-\\d{3}-\\d{4}(.*)";
+        while (iter.hasNext()) {
+            iter.next();
+            if (!iter.hasNext()) {
+                String text = iter.toString();
+                if (text.matches(phoneNumberPattern)) {
+                    result.add(text.replaceAll("[^0-9]", ""));
+                }
+            }
+        }
+
         model.addAttribute("ocrBusinessResult", result);
 
         List<List<Object>> toGSheet = new ArrayList<>();
@@ -191,7 +205,7 @@ public class uploadController {
         }
         toGSheet.add(temp);
 
-        GoogleSheet.updateValues(date, "1ucw8wIlZosXmskTX61odE_CnX8WnEjw9q_Oggj8WwQY", "A1:J1000", "RAW", toGSheet);
+        GoogleSheet.updateValues("시트1", "1ucw8wIlZosXmskTX61odE_CnX8WnEjw9q_Oggj8WwQY", "A1:J1000", "RAW", toGSheet);
         return "ocr-result-business";
     }
 }
