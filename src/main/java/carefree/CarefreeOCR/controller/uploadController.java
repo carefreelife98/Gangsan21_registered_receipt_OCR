@@ -179,7 +179,19 @@ public class uploadController {
         file.transferTo(tempFile);
         // NCP Clova OCR API Call
         List<String> result = naverBusinessApi.callApiBusiness("POST", tempFile.getPath(), naverSecretKey, "jpeg");
+        tempFile.delete(); // 임시 파일 삭제
         model.addAttribute("ocrBusinessResult", result);
+
+        List<List<Object>> toGSheet = new ArrayList<>();
+        int idx = 0;
+        List<Object> temp = new ArrayList<>();
+        for (int i = 0; i < 7 && idx < result.size(); i++) {
+            temp.add(result.get(idx));
+            idx ++;
+        }
+        toGSheet.add(temp);
+
+        GoogleSheet.updateValues(date, "1ucw8wIlZosXmskTX61odE_CnX8WnEjw9q_Oggj8WwQY", "A1:J1000", "RAW", toGSheet);
         return "ocr-result-business";
     }
 }
