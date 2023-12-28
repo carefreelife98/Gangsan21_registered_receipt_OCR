@@ -1,4 +1,5 @@
 name: Deploy to Amazon EC2 - Gangsan21 registered receipt ocr
+
 on:
   push:
     branches:
@@ -34,8 +35,7 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '17'
-
-    # Github Secrets 를 통해 application.properties 생성 및 삽입
+        
     - uses: actions/checkout@v2
     - run: touch ./src/main/resources/application.properties
     - run: echo "${{ env.PROPERTIES }}" > ./src/main/resources/application.properties
@@ -44,8 +44,7 @@ jobs:
       with:
         name: application.properties
         path: ./src/main/resources/application.properties
-    
-    # Github Secrets 를 통해 Google API Account 계정 secret 생성 및 삽입
+
     - name: create-json
       id: create-json
       uses: jsdaniell/create-json@1.1.2
