@@ -87,7 +87,7 @@ public class uploadController {
             }
 
             // 등기 번호 이면,
-            if (text.matches("\\d{5}-\\d{4}-\\d{4}")) {
+            if (text.matches("\\d{5}-\\d{4}-\\d{4}") || text.matches("\\d{13}")) {
                 total ++;
                 // 총 개수 Numbering
                 afterFmt.add("[" + total + "]");
