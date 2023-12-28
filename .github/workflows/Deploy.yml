@@ -1,5 +1,4 @@
 name: Deploy to Amazon EC2 - Gangsan21 registered receipt ocr
-
 on:
   push:
     branches:
