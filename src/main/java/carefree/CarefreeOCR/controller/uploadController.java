@@ -26,7 +26,6 @@ public class uploadController {
     @Value("${naver.service.secretKey}")
     private String secretKey;
     private final NaverOcrApi naverApi;
-//    private final GoogleSheet gSheet;
     ArrayList<String> afterFmt = new ArrayList<>();
     String date = "";
     private static final String[] REGIONS = {
@@ -53,7 +52,6 @@ public class uploadController {
     // 파일 업로드 폼을 보여주기 위한 GET 요청 핸들러 메서드
     @GetMapping("/upload-form")
     public String uploadForm() throws Exception {
-//        return "/upload-form"; // url 시작이 / 인 경우 ec2 linux 에서 인식하지 못하는 에러 존재.
         return "upload-form"; // HTML 템플릿의 이름을 반환 (upload-form.html)
     }
 
@@ -77,15 +75,14 @@ public class uploadController {
 
         tempFile.delete(); // 임시 파일 삭제
 
+        // Iterator 를 사용하여 OCR 결과를 순회.
         ListIterator<String> iter = result.listIterator();
         int total = 0;
         while (iter.hasNext()) {
             String text = iter.next();
 
-            // 날짜 확인
+            // 날짜 확인 및 저장 (Google Sheet 에 날짜 별로 Sheet 생성하기 위함)
             if (text.matches("\\d{4}-\\d{2}-\\d{2}")) {
-//                String date = text.replaceAll("[^0-9]", "");
-//                iDate = Integer.parseInt(date);
                 date = text;
             }
 
@@ -98,7 +95,7 @@ public class uploadController {
                 // 등기 번호 저장
                 afterFmt.add(text);
 
-                // 정규화 된 등기 번호를 사용한 각각의 우체국 등기 조회 서비스 링크.
+                // 정규화 된 등기 번호를 사용한 각 등기 별 우체국 조회 서비스 링크 생성
                 String findPostUrl =
                         "https://service.epost.go.kr/trace.RetrieveDomRigiTraceList.comm?sid1="
                                 + text.replaceAll("[^0-9]", "")
@@ -120,6 +117,7 @@ public class uploadController {
                     iter.previous();
                 }
                 else {
+                    // 두 자 이름 / 다음 줄로 이름이 밀렸을 경우 Concat.
                     if(text.length() <= 2) {
                         text = text.concat(iter.next());
                     }
@@ -130,7 +128,7 @@ public class uploadController {
                 StringBuilder adr = new StringBuilder();
                 while (iter.hasNext()) {
                     text = iter.next();
-
+                    // 합계 / 통상 / 익일특급 발견 시 주소 저장 후 순회.
                     if (text.equals("합계") || text.equals("통상") || text.equals("익일특급")) {
                         afterFmt.add(String.valueOf(adr));
                         break;
@@ -140,6 +138,10 @@ public class uploadController {
                     if (iter.hasNext())
                         adr.append(" ").append(text);
                 }
+            }
+            // 합계 발견 시 종료. (마지막 도달)
+            if (text.equals("합계")) {
+                break;
             }
         }
         model.addAttribute("ocrResult", afterFmt); // OCR 결과를 HTML 템플릿에 전달
