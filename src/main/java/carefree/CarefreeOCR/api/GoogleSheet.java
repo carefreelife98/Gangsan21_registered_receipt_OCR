@@ -44,8 +44,11 @@ public class GoogleSheet {
         // 시트를 추가
         SheetProperties addedSheetProperties = addSheet(service, sheetTitle, spreadsheetId);
 
-        // Updates the values in the specified range.
+        // 시트 이름과 지정한 범위 (A1:G1000) 에 Data 저장.
         ValueRange body = new ValueRange().setValues(values);
+
+        // spreadsheetId 와 range 를 합쳐 update 할 위치를 지정 (Spreadsheet 이름 ! 시작 셀 : 끝 셀)
+        // 예: 2023-12-28!A1:G1000
         return service.spreadsheets().values().append(spreadsheetId, sheetTitle + "!" + range, body)
                 .setValueInputOption(valueInputOption)
                 .execute();

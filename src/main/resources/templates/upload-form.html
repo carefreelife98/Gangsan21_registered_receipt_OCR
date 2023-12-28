@@ -27,7 +27,11 @@
             <div class="col">
                 <form action="/uploadAndOcr" method="post" enctype="multipart/form-data">
                     <input type="file" name="file" accept=".jpg, .jpeg, .png">
-                    <button type="submit">Upload and OCR</button>
+                    <button type="submit">등기 영수증 OCR</button>
+                </form>
+                <form action="/uploadAndOcrBusiness" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" accept=".jpg, .jpeg, .png">
+                    <button type="submit">사업자 등록증 OCR</button>
                 </form>
                 <br><br>
                 <a href="https://docs.google.com/spreadsheets/d/1UADUNDLfmaQLJ1woHzVs9sq2HyScmfLla4lKvjaAwy8/edit#gid=">연동된 Google Sheet 으로 이동</a>

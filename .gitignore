@@ -36,4 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
+gangsan21-ocr-6e01aae86a2f.json
+
 src/main/resources/application.properties

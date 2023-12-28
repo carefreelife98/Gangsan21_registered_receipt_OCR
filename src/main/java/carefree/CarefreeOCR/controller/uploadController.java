@@ -2,6 +2,7 @@ package carefree.CarefreeOCR.controller;
 
 import carefree.CarefreeOCR.api.GoogleSheet;
 import carefree.CarefreeOCR.api.NaverOcrApi;
+import carefree.CarefreeOCR.api.NaverOcrApiBusiness;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +26,12 @@ import java.util.ListIterator;
 public class uploadController {
     @Value("${naver.service.secretKey}")
     private String secretKey;
+
+    @Value("${naver.business.secretKey}")
+    private String secretKeyBusiness;
+
     private final NaverOcrApi naverApi;
+    private final NaverOcrApiBusiness naverBusinessApi;
     ArrayList<String> afterFmt = new ArrayList<>();
     String date = "";
     private static final String[] REGIONS = {
@@ -68,9 +74,9 @@ public class uploadController {
         file.transferTo(tempFile);
 
         // 이전 실행 내역 초기화
-        if (!afterFmt.isEmpty()) {
-            afterFmt.clear();
-        }
+        if (!afterFmt.isEmpty()) afterFmt.clear();
+
+        // NCP Clova OCR API Call
         List<String> result = naverApi.callApi("POST", tempFile.getPath(), naverSecretKey, "jpeg");
 
         tempFile.delete(); // 임시 파일 삭제
@@ -86,7 +92,7 @@ public class uploadController {
                 date = text;
             }
 
-            // 등기 번호 이면,
+            // 등기 번호 발견 시 데이터 가공 (일반 영수증: 00000-0000-0000 / 대량 발송 영수증: 0000000000000)
             if (text.matches("\\d{5}-\\d{4}-\\d{4}") || text.matches("\\d{13}")) {
                 total ++;
                 // 총 개수 Numbering
@@ -159,5 +165,21 @@ public class uploadController {
         }
         GoogleSheet.updateValues(date, "1UADUNDLfmaQLJ1woHzVs9sq2HyScmfLla4lKvjaAwy8", "A1:G1000", "RAW", toGSheet);
         return "ocr-result"; // OCR 결과를 표시하는 HTML 템플릿 이름 반환
+    }
+
+    @PostMapping("/ocrBusiness")
+    public String uploadAndOcrBusiness(@RequestParam("file") MultipartFile file, Model model) throws IOException {
+        if (file.isEmpty()) {
+            return "error"; // 파일이 비어있을 경우 에러를 처리하는 HTML 템플릿으로 이동
+        }
+
+        String naverSecretKey = secretKeyBusiness;
+
+        File tempFile = File.createTempFile("temp", file.getOriginalFilename());
+        file.transferTo(tempFile);
+        // NCP Clova OCR API Call
+        List<String> result = naverBusinessApi.callApiBusiness("POST", tempFile.getPath(), naverSecretKey, "jpeg");
+        model.addAttribute("ocrBusinessResult", result);
+        return "ocr-result-business";
     }
 }
