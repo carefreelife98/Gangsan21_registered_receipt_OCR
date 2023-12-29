@@ -177,21 +177,17 @@ public class uploadController {
 
         File tempFile = File.createTempFile("temp", file.getOriginalFilename());
         file.transferTo(tempFile);
+
         // NCP Clova OCR API Call
         List<String> result = naverBusinessApi.callApiBusiness("POST", tempFile.getPath(), naverSecretKey, "jpeg");
         tempFile.delete(); // 임시 파일 삭제
 
         // Iterator 를 사용하여 OCR 결과를 순회.
         ListIterator<String> iter = result.listIterator();
-        String phoneNumberPattern = "(.*)\\d{3}-\\d{3}-\\d{4}(.*)";
+        String text = "";
         while (iter.hasNext()) {
-            iter.next();
-            if (!iter.hasNext()) {
-                String text = iter.toString();
-                if (text.matches(phoneNumberPattern)) {
-                    result.add(text.replaceAll("[^0-9]", ""));
-                }
-            }
+            text = iter.next();
+            text.replaceAll("\n", "");
         }
 
         model.addAttribute("ocrBusinessResult", result);
