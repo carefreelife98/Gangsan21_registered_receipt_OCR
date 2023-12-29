@@ -1,48 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gangsan-21 M&A</title>
-    <!-- 추가적인 스타일이나 스크립트를 여기에 추가할 수 있습니다. -->
-</head>
-
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <header>
     <img src="image/gangsan21_logo.png" alt="gangsan21_logo">
 </header>
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <title>Carefree Life's OCR Result</title>
+</head>
+<body>
+<div class="container" style="max-width: 900px">
+    <div class="py-5 text-center">
+        <h1>CarefreeLife's 강산21 M&A OCR</h1>
+    </div>
+    <img src="image/gangsan21_logo.png" alt="gangsan21_logo">
+    <br><br>
+    <div class="row">
+        <div class="col">
+            <form action="/upload-form" method="get">
+                <button type="submit">등기 영수증 / 사업자 등록증 OCR</button>
+            </form>
+        </div>
+    </div>
+    <br><br>
+    <footer>
+        <!-- 저작권자 표시 -->
+        <p>© 2023 Gangsan21 M&A. All rights reserved. | Copyrighted by Carefreelife98</p>
 
-<main>
-    <!-- OCR Rest API 실행 버튼 -->
-    <form action="/upload-form" method="get">
-        <button type="submit">OCR Rest API 실행</button>
-    </form>
-    <!-- 여기에 추가적인 콘텐츠를 추가할 수 있습니다. -->
-</main>
+        <!-- 회사 정보 -->
+        <address>
+            <p>Gangsan21 M&A</p>
+            <p>[도로명] 경기 성남시 중원구 사기막골로 124 (SKn테크노파크)<br>
+                비즈센터동 7층 706호<br><br>
 
-<footer>
-    <!-- 저작권자 표시 -->
-    <p>© 2023 Gangsan21 M&A. All rights reserved. | Copyrighted by Carefreelife98</p>
-
-    <!-- 회사 정보 -->
-    <address>
-        <p>Gangsan21 M&A</p>
-        <p>[도로명] 경기 성남시 중원구 사기막골로 124 (SKn테크노파크)<br>
-            비즈센터동 7층 706호<br><br>
-
-            [지번] 경기도 성남시 중원구 상대원동 190-1<br>
-            비즈센터동 7층 706호</p><br>
-        <p>WEB: <a href="https://www.gangsan21.com">www.gangsan21.com</a></p>
-        <p>TEL: 02-2157-8338</p>
-        <p>FAX: 02-2179-8133</p>
-        <p>Blog: <a href="https://blog.naver.com/ghskfen347">blog.naver.com/ghskfen347</a> </p>
-    </address>
-</footer>
-
-<!-- 추가적인 스크립트를 여기에 추가할 수 있습니다. -->
-<script>
-</script>
+                [지번] 경기도 성남시 중원구 상대원동 190-1<br>
+                비즈센터동 7층 706호</p><br>
+            <p>WEB: <a href="https://www.gangsan21.com">www.gangsan21.com</a></p>
+            <p>TEL: 02-2157-8338</p>
+            <p>FAX: 02-2179-8133</p>
+            <p>Blog: <a href="https://blog.naver.com/ghskfen347">blog.naver.com/ghskfen347</a> </p>
+        </address>
+    </footer>
+</div>
 </body>
-
 </html>
