@@ -63,7 +63,7 @@ public class uploadController {
 
     // 파일 업로드 및 OCR 수행을 위한 POST 요청 핸들러 메서드
     @PostMapping("/uploadAndOcr")
-    public String uploadAndOcr(@RequestParam("file") List<MultipartFile> files, Model model) throws IOException {
+    public String uploadAndOcr(@RequestParam("files") List<MultipartFile> files, Model model) throws IOException {
         for (MultipartFile file : files) {
             if (file.isEmpty()) {
                 return "error"; // 파일이 비어있을 경우 에러를 처리하는 HTML 템플릿으로 이동
@@ -169,7 +169,7 @@ public class uploadController {
     }
 
     @PostMapping("/ocrBusiness")
-    public String uploadAndOcrBusiness(@RequestParam("file") List<MultipartFile> files, Model model) throws IOException {
+    public String uploadAndOcrBusiness(@RequestParam("files") List<MultipartFile> files, Model model) throws IOException {
         for (MultipartFile file : files) {
             if (file.isEmpty()) {
                 return "error"; // 파일이 비어있을 경우 에러를 처리하는 HTML 템플릿으로 이동
