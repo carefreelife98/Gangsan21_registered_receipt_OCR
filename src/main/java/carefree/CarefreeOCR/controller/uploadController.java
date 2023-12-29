@@ -182,12 +182,11 @@ public class uploadController {
         List<String> result = naverBusinessApi.callApiBusiness("POST", tempFile.getPath(), naverSecretKey, "jpeg");
         tempFile.delete(); // 임시 파일 삭제
 
-        // Iterator 를 사용하여 OCR 결과를 순회.
-        ListIterator<String> iter = result.listIterator();
-        String text = "";
-        while (iter.hasNext()) {
-            text = iter.next();
-            text.replaceAll("\n", "");
+        // \n 삭제
+        int num = 0;
+        while (num < result.size()) {
+            result.set(num, result.get(num).replaceAll("\n", ""));
+            num++;
         }
 
         model.addAttribute("ocrBusinessResult", result);
