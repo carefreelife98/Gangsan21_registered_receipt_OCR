@@ -184,8 +184,14 @@ public class uploadController {
             List<String> result = naverBusinessApi.callApiBusiness("POST", tempFile.getPath(), naverSecretKey, "jpeg");
             tempFile.delete(); // 임시 파일 삭제
 
+            if (result == null) {
+                log.info("!! OCR 불가능한 이미지 입니다. result 에 NULL 값 확인됨 !!");
+                continue;
+            }
+
             // \n 삭제
             int num = 0;
+
             while (num < result.size()) {
                 result.set(num, result.get(num).replaceAll("\n", ", "));
                 num++;
