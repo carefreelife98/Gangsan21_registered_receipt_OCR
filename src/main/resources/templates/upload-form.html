@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col">
                 <form action="/uploadAndOcr" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" accept=".jpg, .jpeg, .png">
+                    <input type="file" name="files" multiple accept=".jpg, .jpeg, .png">
                     <button type="submit">등기 영수증 OCR</button>
                 </form>
                 <br><br>
@@ -36,7 +36,7 @@
                 <br><br>
 
                 <form action="/ocrBusiness" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" accept=".jpg, .jpeg, .png">
+                    <input type="file" name="files" multiple accept=".jpg, .jpeg, .png">
                     <button type="submit">사업자 등록증 OCR</button>
                 </form>
                 <br><br>
