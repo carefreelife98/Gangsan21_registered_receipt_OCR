@@ -30,6 +30,8 @@ public class uploadController {
     @Value("${naver.business.secretKey}")
     private String secretKeyBusiness;
 
+    private List<String> exceptions = new ArrayList<>();
+
     private final NaverOcrApi naverApi;
     private final NaverOcrApiBusiness naverBusinessApi;
     ArrayList<String> afterFmt = new ArrayList<>();
@@ -79,6 +81,9 @@ public class uploadController {
 
             // NCP Clova OCR API Call
             List<String> result = naverApi.callApi("POST", tempFile.getPath(), naverSecretKey, "jpeg");
+
+            // api 호출 실패 시 exception 에 기록하고 pass.
+            if (errors(result, tempFile)) continue;
 
             tempFile.delete(); // 임시 파일 삭제
 
@@ -165,6 +170,8 @@ public class uploadController {
             }
             GoogleSheet.updateValues(date, "1UADUNDLfmaQLJ1woHzVs9sq2HyScmfLla4lKvjaAwy8", "A1:G1000", "RAW", toGSheet);
         }
+        log.info(concatString(exceptions));
+        exceptions.clear();
         return "ocr-result"; // OCR 결과를 표시하는 HTML 템플릿 이름 반환
     }
 
@@ -182,12 +189,11 @@ public class uploadController {
 
             // NCP Clova OCR API Call
             List<String> result = naverBusinessApi.callApiBusiness("POST", tempFile.getPath(), naverSecretKey, "jpeg");
-            tempFile.delete(); // 임시 파일 삭제
 
-            if (result == null) {
-                log.info("!! OCR 불가능한 이미지 입니다. result 에 NULL 값 확인됨 !!");
-                continue;
-            }
+            // api 호출 실패 시 exception 에 기록하고 pass.
+            if (errors(result, tempFile)) continue;
+
+            tempFile.delete(); // 임시 파일 삭제
 
             // \n 삭제
             int num = 0;
@@ -196,7 +202,6 @@ public class uploadController {
                 result.set(num, result.get(num).replaceAll("\n", ", "));
                 num++;
             }
-
             model.addAttribute("ocrBusinessResult", result);
 
             List<List<Object>> toGSheet = new ArrayList<>();
@@ -210,6 +215,23 @@ public class uploadController {
 
             GoogleSheet.updateValues("시트1", "1ucw8wIlZosXmskTX61odE_CnX8WnEjw9q_Oggj8WwQY", "A1:J1000", "RAW", toGSheet);
         }
+        log.info(concatString(exceptions));
+        exceptions.clear();
         return "ocr-result-business";
+    }
+
+    private Boolean errors(List<String> tg, File f) {
+        if (tg == null) {
+            log.info("!! OCR 불가능한 이미지 입니다. result 에 NULL 값 확인됨 !!");
+            exceptions.add(f.getName());
+            return true;
+        }
+        return false;
+    }
+
+    private static String concatString(List<String> stringList) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String str : stringList) stringBuilder.append(str);
+        return stringBuilder.toString();
     }
 }
