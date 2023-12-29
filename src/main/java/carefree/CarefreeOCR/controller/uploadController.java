@@ -63,144 +63,147 @@ public class uploadController {
 
     // 파일 업로드 및 OCR 수행을 위한 POST 요청 핸들러 메서드
     @PostMapping("/uploadAndOcr")
-    public String uploadAndOcr(@RequestParam("file") MultipartFile file, Model model) throws IOException {
-        if (file.isEmpty()) {
-            return "error"; // 파일이 비어있을 경우 에러를 처리하는 HTML 템플릿으로 이동
-        }
-
-        String naverSecretKey = secretKey; // 본인의 네이버 Clova OCR 시크릿 키로 대체
-
-        File tempFile = File.createTempFile("temp", file.getOriginalFilename());
-        file.transferTo(tempFile);
-
-        // 이전 실행 내역 초기화
-        if (!afterFmt.isEmpty()) afterFmt.clear();
-
-        // NCP Clova OCR API Call
-        List<String> result = naverApi.callApi("POST", tempFile.getPath(), naverSecretKey, "jpeg");
-
-        tempFile.delete(); // 임시 파일 삭제
-
-        // Iterator 를 사용하여 OCR 결과를 순회.
-        ListIterator<String> iter = result.listIterator();
-        int total = 0;
-        while (iter.hasNext()) {
-            String text = iter.next();
-
-            // 날짜 확인 및 저장 (Google Sheet 에 날짜 별로 Sheet 생성하기 위함)
-            if (text.matches("\\d{4}-\\d{2}-\\d{2}")) {
-                date = text;
+    public String uploadAndOcr(@RequestParam("file") List<MultipartFile> files, Model model) throws IOException {
+        for (MultipartFile file : files) {
+            if (file.isEmpty()) {
+                return "error"; // 파일이 비어있을 경우 에러를 처리하는 HTML 템플릿으로 이동
             }
 
-            // 등기 번호 발견 시 데이터 가공 (일반 영수증: 00000-0000-0000 / 대량 발송 영수증: 0000000000000)
-            if (text.matches("\\d{5}-\\d{4}-\\d{4}") || text.matches("\\d{13}")) {
-                total ++;
-                // 총 개수 Numbering
-                afterFmt.add("[" + total + "]");
+            String naverSecretKey = secretKey; // 본인의 네이버 Clova OCR 시크릿 키로 대체
 
-                // 등기 번호 저장
-                afterFmt.add(text);
+            File tempFile = File.createTempFile("temp", file.getOriginalFilename());
+            file.transferTo(tempFile);
 
-                // 정규화 된 등기 번호를 사용한 각 등기 별 우체국 조회 서비스 링크 생성
-                String findPostUrl =
-                        "https://service.epost.go.kr/trace.RetrieveDomRigiTraceList.comm?sid1="
-                                + text.replaceAll("[^0-9]", "")
-                                + "&displayHeader=";
-                afterFmt.add(findPostUrl);
+            // 이전 실행 내역 초기화
+            if (!afterFmt.isEmpty()) afterFmt.clear();
 
-                // 가격 skip, 우편 번호 저장
-                iter.next();
-                text = iter.next();
-                afterFmt.add(text);
+            // NCP Clova OCR API Call
+            List<String> result = naverApi.callApi("POST", tempFile.getPath(), naverSecretKey, "jpeg");
 
-                // 기업 명 저장
-                afterFmt.add(iter.next());
+            tempFile.delete(); // 임시 파일 삭제
 
-                // 수신인 저장
-                text = iter.next();
-                if (Arrays.asList(REGIONS).contains(text)) {
-                    afterFmt.add("-");
-                    iter.previous();
+            // Iterator 를 사용하여 OCR 결과를 순회.
+            ListIterator<String> iter = result.listIterator();
+            int total = 0;
+            while (iter.hasNext()) {
+                String text = iter.next();
+
+                // 날짜 확인 및 저장 (Google Sheet 에 날짜 별로 Sheet 생성하기 위함)
+                if (text.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                    date = text;
                 }
-                else {
-                    // 두 자 이름 / 다음 줄로 이름이 밀렸을 경우 Concat.
-                    if(text.length() <= 2) {
-                        text = text.concat(iter.next());
-                    }
+
+                // 등기 번호 발견 시 데이터 가공 (일반 영수증: 00000-0000-0000 / 대량 발송 영수증: 0000000000000)
+                if (text.matches("\\d{5}-\\d{4}-\\d{4}") || text.matches("\\d{13}")) {
+                    total++;
+                    // 총 개수 Numbering
+                    afterFmt.add("[" + total + "]");
+
+                    // 등기 번호 저장
                     afterFmt.add(text);
-                }
 
-                // 주소 저장
-                StringBuilder adr = new StringBuilder();
-                while (iter.hasNext()) {
+                    // 정규화 된 등기 번호를 사용한 각 등기 별 우체국 조회 서비스 링크 생성
+                    String findPostUrl =
+                            "https://service.epost.go.kr/trace.RetrieveDomRigiTraceList.comm?sid1="
+                                    + text.replaceAll("[^0-9]", "")
+                                    + "&displayHeader=";
+                    afterFmt.add(findPostUrl);
+
+                    // 가격 skip, 우편 번호 저장
+                    iter.next();
                     text = iter.next();
-                    // 합계 / 통상 / 익일특급 발견 시 주소 저장 후 순회.
-                    if (text.equals("합계") || text.equals("통상") || text.equals("익일특급")) {
-                        afterFmt.add(String.valueOf(adr));
-                        break;
+                    afterFmt.add(text);
+
+                    // 기업 명 저장
+                    afterFmt.add(iter.next());
+
+                    // 수신인 저장
+                    text = iter.next();
+                    if (Arrays.asList(REGIONS).contains(text)) {
+                        afterFmt.add("-");
+                        iter.previous();
+                    } else {
+                        // 두 자 이름 / 다음 줄로 이름이 밀렸을 경우 Concat.
+                        if (text.length() <= 2) {
+                            text = text.concat(iter.next());
+                        }
+                        afterFmt.add(text);
                     }
 
-                    // 띄어 쓰기 포함 주소 문자열 concat.
-                    if (iter.hasNext())
-                        adr.append(" ").append(text);
+                    // 주소 저장
+                    StringBuilder adr = new StringBuilder();
+                    while (iter.hasNext()) {
+                        text = iter.next();
+                        // 합계 / 통상 / 익일특급 발견 시 주소 저장 후 순회.
+                        if (text.equals("합계") || text.equals("통상") || text.equals("익일특급")) {
+                            afterFmt.add(String.valueOf(adr));
+                            break;
+                        }
+
+                        // 띄어 쓰기 포함 주소 문자열 concat.
+                        if (iter.hasNext())
+                            adr.append(" ").append(text);
+                    }
+                }
+                // 합계 발견 시 종료. (마지막 도달)
+                if (text.equals("합계")) {
+                    break;
                 }
             }
-            // 합계 발견 시 종료. (마지막 도달)
-            if (text.equals("합계")) {
-                break;
-            }
-        }
-        model.addAttribute("ocrResult", afterFmt); // OCR 결과를 HTML 템플릿에 전달
+            model.addAttribute("ocrResult", afterFmt); // OCR 결과를 HTML 템플릿에 전달
 
-        List<List<Object>> toGSheet = new ArrayList<>();
-        int idx = 0;
-        log.info("size: " + afterFmt.size());
-        for (int i = 0; i < afterFmt.size(); i++) {
-            List<Object> temp = new ArrayList<>();
-            for (int j = 0; j < 7 && idx < afterFmt.size(); j++) {
-                temp.add(afterFmt.get(idx));
-                idx ++;
+            List<List<Object>> toGSheet = new ArrayList<>();
+            int idx = 0;
+            log.info("size: " + afterFmt.size());
+            for (int i = 0; i < afterFmt.size(); i++) {
+                List<Object> temp = new ArrayList<>();
+                for (int j = 0; j < 7 && idx < afterFmt.size(); j++) {
+                    temp.add(afterFmt.get(idx));
+                    idx++;
+                }
+                toGSheet.add(temp);
             }
-            toGSheet.add(temp);
+            GoogleSheet.updateValues(date, "1UADUNDLfmaQLJ1woHzVs9sq2HyScmfLla4lKvjaAwy8", "A1:G1000", "RAW", toGSheet);
         }
-        GoogleSheet.updateValues(date, "1UADUNDLfmaQLJ1woHzVs9sq2HyScmfLla4lKvjaAwy8", "A1:G1000", "RAW", toGSheet);
         return "ocr-result"; // OCR 결과를 표시하는 HTML 템플릿 이름 반환
     }
 
     @PostMapping("/ocrBusiness")
-    public String uploadAndOcrBusiness(@RequestParam("file") MultipartFile file, Model model) throws IOException {
-        if (file.isEmpty()) {
-            return "error"; // 파일이 비어있을 경우 에러를 처리하는 HTML 템플릿으로 이동
+    public String uploadAndOcrBusiness(@RequestParam("file") List<MultipartFile> files, Model model) throws IOException {
+        for (MultipartFile file : files) {
+            if (file.isEmpty()) {
+                return "error"; // 파일이 비어있을 경우 에러를 처리하는 HTML 템플릿으로 이동
+            }
+
+            String naverSecretKey = secretKeyBusiness;
+
+            File tempFile = File.createTempFile("temp", file.getOriginalFilename());
+            file.transferTo(tempFile);
+
+            // NCP Clova OCR API Call
+            List<String> result = naverBusinessApi.callApiBusiness("POST", tempFile.getPath(), naverSecretKey, "jpeg");
+            tempFile.delete(); // 임시 파일 삭제
+
+            // \n 삭제
+            int num = 0;
+            while (num < result.size()) {
+                result.set(num, result.get(num).replaceAll("\n", ", "));
+                num++;
+            }
+
+            model.addAttribute("ocrBusinessResult", result);
+
+            List<List<Object>> toGSheet = new ArrayList<>();
+            int idx = 0;
+            List<Object> temp = new ArrayList<>();
+            for (int i = 0; i < 7 && idx < result.size(); i++) {
+                temp.add(result.get(idx));
+                idx++;
+            }
+            toGSheet.add(temp);
+
+            GoogleSheet.updateValues("시트1", "1ucw8wIlZosXmskTX61odE_CnX8WnEjw9q_Oggj8WwQY", "A1:J1000", "RAW", toGSheet);
         }
-
-        String naverSecretKey = secretKeyBusiness;
-
-        File tempFile = File.createTempFile("temp", file.getOriginalFilename());
-        file.transferTo(tempFile);
-
-        // NCP Clova OCR API Call
-        List<String> result = naverBusinessApi.callApiBusiness("POST", tempFile.getPath(), naverSecretKey, "jpeg");
-        tempFile.delete(); // 임시 파일 삭제
-
-        // \n 삭제
-        int num = 0;
-        while (num < result.size()) {
-            result.set(num, result.get(num).replaceAll("\n", ", "));
-            num++;
-        }
-
-        model.addAttribute("ocrBusinessResult", result);
-
-        List<List<Object>> toGSheet = new ArrayList<>();
-        int idx = 0;
-        List<Object> temp = new ArrayList<>();
-        for (int i = 0; i < 7 && idx < result.size(); i++) {
-            temp.add(result.get(idx));
-            idx ++;
-        }
-        toGSheet.add(temp);
-
-        GoogleSheet.updateValues("시트1", "1ucw8wIlZosXmskTX61odE_CnX8WnEjw9q_Oggj8WwQY", "A1:J1000", "RAW", toGSheet);
         return "ocr-result-business";
     }
 }
