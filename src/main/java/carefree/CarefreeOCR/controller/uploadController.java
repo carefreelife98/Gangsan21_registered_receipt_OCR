@@ -185,7 +185,7 @@ public class uploadController {
         // \n 삭제
         int num = 0;
         while (num < result.size()) {
-            result.set(num, result.get(num).replaceAll("\n", ""));
+            result.set(num, result.get(num).replaceAll("\n", ", "));
             num++;
         }
 
