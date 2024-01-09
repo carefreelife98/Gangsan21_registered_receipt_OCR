@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "type": "service_account",
   "project_id": "gangsan21-ocr",
   "private_key_id": "287fbd2bd471d302bdb53fba8bdb56e440c2a3d8",
@@ -12,3 +13,8 @@
   "universe_domain": "googleapis.com"
 }
 
+=======
+
+}
+
+>>>>>>> f567d0b6faac8f5d2da087de0259e4ba8f088d4c
