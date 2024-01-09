@@ -1,13 +1,3 @@
 {
-  "type": "service_account",
-  "project_id": "gangsan21-ocr",
-  "private_key_id": "287fbd2bd471d302bdb53fba8bdb56e440c2a3d8",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDcbjQVwMoH5eKU\nlKoxwbZdYsjYXEd8rjO8d6z0/e+Oc94im3uGEzGF2TVjc/FbedAM4RmTV00ld/zW\nSJJb2ri7RaZSWHcst0FIJBdBBi/cKPugqMfU5CGwFuXcBPauYb+1QdaDVtrPXaJT\nG7l6zkTgy8s3QMf63T31jIQ+9Z4H+7y57ohGO6qZgV4/bGEI7QY3ft6+lU+ko0rp\nddrwvWI7PQSwntXnhRhDmPnlnRCiF1g4BV8dj8qC0fu5Nzl5TvLWkQ27oP4DesTx\njccV8T1sZsJvfY6nEIW6FlEPuRFuJw51jTIad3R5E7NczPCxg+AZJMZ7PqLKS0PA\no4AedMqzAgMBAAECggEAHlw1Y0ue5/CTQRiqylieaAVbmWU4WWVa7dnj4gh5rrqp\nvUWCAWjyWLeegViuRQWlkKiOT7tl/kOk+NSdB/a7m9uPeWcC3w9MeAW0iDm0bNPe\nOHYWs+1J8Ilu1lt+qG0BLRNo2sUjNQ119pFqfg4b8YRQNIeBI73GM2RLsKo+vmV9\nt7LTh0hbumLFH6lcT3f7kQCPySs5Za8UdD0pk5oZLK/6a+WxkOBdC3JebEiDtSUT\n6XwFseLpGTNGhsqdmaACFKh6UBRadXyEQrRd8CsiqN4Ss3aX7HwBhXPUhjJspWDh\nFBTPKCqF7O/2WMSLwHENBw6HO6hAbjReHx1Uil7XHQKBgQD91D+Ybkj3/FMBZSqw\nCjLGc5q8h+x4ny7jKxYoeahVdR/FEhmPfKQI6izAxK7VOj/vIbS/37Hsgip8dhCF\nvk+YKuiGe9ibTkeCIUi+iTDEpnFEYIYLgCEPP58GrLkedD0KlNYCOKYJrA9vjf6c\nI+reULvRzqWSx54EbaVeEF4VxQKBgQDeUNRo0GSfkAzPuwDYS0BPa73heR+Dr2/H\nS/oHRWOPLv0ZKlKUuFW5k7iaVNjZIWYioweSx5WanSOrRs5C9eZrSQuxcteHe3jk\n7r1oR/l3y3RSEdKstnx8xpOm9L+EfNPWjuIeZfXxh9VVadgV/T8BIKOnmR1HW6o3\nuVWi5KDeFwKBgCL8Qzu2T7Zmf+ZcVFLpRPBXdMdxkKVbg3HqOWagxhPpTdSy1vUQ\n/+b+p+Z19YcMPU2vfqNHqNVpZ4O6HjLg9UWK/Hu0zDkzw+VqwwUIEcG5EzmSeEdT\nhLr+UOPxoJ5S9SrlMs4hkrkYjxQYJTTOOowj4o9bhTTC8MO5fSaG6QDlAoGAV987\nFfLI0wjtB26y9stHsBy2ANkPS82cMPom6ZjTsVSxVbEU0xPJToDFBrtiuvAonqgx\n5iJdT6+s2ZYzEOSBHwbQSGNMLZDwSAzVcNKCGIeigo3o57t5mRgkZGl5CbUNRlFT\nrxA+FinKeOhNMOPYc2mjRiuPFxV0QnJPFwOnUiECgYEAr1KT6fs0cWSCTFvBWXOQ\nzZo+BJ30VWPWzBrWs2my4KDXSAiFmF9EcRv4+uQBQGuuxOkETRT8TZdepC7fKlHA\nR/9ETX4+po+htISskAu7fnXLUsntJy2otVvVb3/wREzKoBs2Ig4JSyJipg3YeM3a\nOeK5/s8AuOsvvS/5g+rNFro=\n-----END PRIVATE KEY-----\n",
-  "client_email": "gangsan21-ocr@gangsan21-ocr.iam.gserviceaccount.com",
-  "client_id": "103917899757798031373",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gangsan21-ocr%40gangsan21-ocr.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
+
 }
