@@ -20,9 +20,12 @@ import java.util.List;
 public class GoogleSheet {
     private static HttpRequestInitializer requestInitializer;
 
+//    @Value("${google.sheets.secret}")
+    private String secret;
+
     public GoogleSheet() throws IOException {
         this.requestInitializer = new HttpCredentialsAdapter(
-                GoogleCredentials.fromStream(new FileInputStream("/home/ec2-user/app/gangsan21-ocr-6e01aae86a2f.json"))
+                GoogleCredentials.fromStream(new FileInputStream("gangsan21-ocr-6e01aae86a2f.json"))
                         .createScoped(Collections.singletonList("https://www.googleapis.com/auth/spreadsheets"))
         );
     }
