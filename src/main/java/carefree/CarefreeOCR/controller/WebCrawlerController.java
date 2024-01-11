@@ -45,7 +45,7 @@ public class WebCrawlerController {
         List<WebCrawlerDto> list = new ArrayList<>();
 
         String WEB_DRIVER_ID = "webdriver.chrome.driver";
-        String WEB_DRIVER_PATH = "chromedriver-mac-arm64/chromedriver";
+        String WEB_DRIVER_PATH = "/home/ec2-user/app/chromedriver-mac-arm64/chromedriver";
 
         System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
         ChromeOptions options = new ChromeOptions();
