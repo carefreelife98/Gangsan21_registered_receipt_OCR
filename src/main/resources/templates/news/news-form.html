@@ -48,7 +48,12 @@
                 $('#data-container').html(sectionContent);
             })
             .fail(function(xhr, status, error) {
-                $('#data-container').html('<div class="alert alert-danger">An error occurred: ' + error + '</div>');
+                var errorMessage = 'An error occurred: ' + error + '<br>' +
+                    'Status: ' + status + '<br>' +
+                    'Response Text: ' + xhr.responseText;
+                $('#data-container').html('<div class="alert alert-danger">' + errorMessage + '</div>');
+
+                console.log("error: " + error)
             });
         });
     });
