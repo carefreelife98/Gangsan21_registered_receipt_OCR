@@ -35,15 +35,15 @@
             };
 
             $.ajax({
-                url: 'http://www.conslove.co.kr/news/articleList.html', // Replace with your API endpoint
+                url: 'http://www.conslove.co.kr/news/articleList.html?sc_sub_section_code=S2N39&view_type=sm', // Replace with your API endpoint
                 type: 'GET',
-                data: payload,
-                dataType: 'html'
+                // data: payload,
+                dataType: 'text/html'
             })
             .done(function(response) {
                 var tempDom = $('<div></div>').html(response);
 
-                var sectionContent = tempDom.find('section.article-list-content.type-sm.text-left').html();
+                var sectionContent = tempDom.find('.article-list-content').html();
 
                 $('#data-container').html(sectionContent);
             })
