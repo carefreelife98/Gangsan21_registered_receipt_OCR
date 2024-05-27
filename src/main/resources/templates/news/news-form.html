@@ -38,7 +38,7 @@
                 url: 'http://www.conslove.co.kr/news/articleList.html?sc_sub_section_code=S2N39&view_type=sm', // Replace with your API endpoint
                 type: 'GET',
                 // data: payload,
-                dataType: 'text/html'
+                dataType: 'html'
             })
             .done(function(response) {
                 var tempDom = $('<div></div>').html(response);
