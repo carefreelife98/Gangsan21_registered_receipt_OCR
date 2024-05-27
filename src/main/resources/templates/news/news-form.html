@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery, AJAX, and Bootstrap Example</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS and Popper.js CDN -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">Gang San 21 News</h1>
+    <div class="text-center mt-3">
+        <button id="load-data-btn" class="btn btn-primary">Load Data</button>
+    </div>
+    <h2 class="text-center">!! 아래에서 최신 뉴스들을 볼 수 있습니다 !!</h2>
+    <div id="data-container" class="mt-4"></div>
+    <!--    1. 버튼(Load Data)을 클릭하면 AJAX 요청을 통해 데이터를 가져옴.-->
+    <!--    2. AJAX 요청 성공 시 응답으로 받은 HTML을 임시 DOM 요소에 저장한 후, 특정 클래스를 가진 <section> 태그의 내용 추출.-->
+    <!--    3. 추출된 내용을 본문의 #data-container 요소에 삽입.-->
+    <!--    4. AJAX 요청 실패 시 부트스트랩의 경고(Alert) 메시지 표시.-->
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#load-data-btn').click(function() {
+
+            var payload = {
+                sc_sub_section_code: 'S2N39',
+                view_type: 'sm'
+            };
+
+            $.ajax({
+                url: 'http://www.conslove.co.kr/news/articleList.html', // Replace with your API endpoint
+                type: 'GET',
+                data: payload,
+                dataType: 'html'
+            })
+            .done(function(response) {
+                var tempDom = $('<div></div>').html(response);
+
+                var sectionContent = tempDom.find('section.article-list-content.type-sm.text-left').html();
+
+                $('#data-container').html(sectionContent);
+            })
+            .fail(function(xhr, status, error) {
+                $('#data-container').html('<div class="alert alert-danger">An error occurred: ' + error + '</div>');
+            });
+        });
+    });
+</script>
+</body>
+</html>

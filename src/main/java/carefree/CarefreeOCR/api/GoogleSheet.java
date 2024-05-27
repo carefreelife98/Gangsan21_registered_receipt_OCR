@@ -8,6 +8,7 @@ import com.google.api.services.sheets.v4.model.*;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
@@ -20,7 +21,7 @@ import java.util.List;
 public class GoogleSheet {
     private static HttpRequestInitializer requestInitializer;
 
-//    @Value("${google.sheets.secret}")
+    @Value("${google.sheets.secret}")
     private String secret;
 
     public GoogleSheet() throws IOException {
