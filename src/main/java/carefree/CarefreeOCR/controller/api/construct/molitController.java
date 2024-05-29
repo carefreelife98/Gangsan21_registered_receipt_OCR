@@ -45,7 +45,7 @@ public class molitController {
         String response = webClient
                 .get()
                 .uri(uriBuilder ->
-                        uriBuilder.path("/")
+                        uriBuilder.path("")
                                 .queryParam("serviceKey", encKey)
                                 .queryParam("pageNo", pageNo)
                                 .queryParam("numOfRows", numOfRows)
