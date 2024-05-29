@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="image/favicon.ico">
+    <title>Gangsan21 M&A</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header-image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+        .btn-custom {
+            width: 100%;
+            margin-bottom: 10px;
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        address {
+            color: #adb5bd;
+        }
+        address p {
+            margin: 0;
+        }
+        a {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+    <img src="image/gangsan21_logo.png" alt="Gangsan21 Logo" class="header-image">
+    <div class="py-5 text-center">
+        <h1>Gangsan21 M&A [국토교통부] 건설 업체 정보 엑셀 다운로드 페이지</h1>
+        <h3>페이지 수는 1로, 탐색할 업체 수 많게 하면 될 듯? 10000 행까지도 나오는 것 확인.</h3>
+        <p>검색조건기간 공시기간시작일: 2003년 1월 1일 이후 데이터제공 원활한 검색 속도를 위해서 적절한 기간을 설정하여주시기 바랍니다 (ex : 20141201)</p>
+        <p>검색조건기간 공시기간종료일: 원활한 검색 속도를 위해서 적절한 기간을 설정하여주시기 바랍니다 (ex : 20141202)</p>
+        <p>등록 시/도 선택 조건값 (ex : 서울,부산,대구,인천,광주,대전,울산,세종시,경기,강원,충북,충남,전북,전남,경북,경남,제주)</p>
+        <p>등록 시/군/구 선택 조건값 (ex : 과천시, 양평군, 강남구)</p>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col">
+            <form action="/construct/info/molit/download" method="post">
+                <div class="form-group">
+                    <label for="pageNo">페이지 수</label>
+                    <input type="text" class="form-control" id="pageNo" name="pageNo" required>
+                </div>
+                <div class="form-group">
+                    <label for="numOfRows">탐색할 업체 수</label>
+                    <input type="text" class="form-control" id="numOfRows" name="numOfRows" required>
+                </div>
+                <div class="form-group">
+                    <label for="sDate">검색조건기간 공시기간시작일</label>
+                    <input type="date" class="form-control" id="sDate" name="sDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="eDate">검색조건기간 공시기간종료일</label>
+                    <input type="date" class="form-control" id="eDate" name="eDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="ncrAreaName">등록 시/도 (Optional)</label>
+                    <input type="text" class="form-control" id="ncrAreaName" name="ncrAreaName">
+                </div>
+                <div class="form-group">
+                    <label for="ncrAreaDetailName">등록 시/군/구 (Optional)</label>
+                    <input type="text" class="form-control" id="ncrAreaDetailName" name="ncrAreaDetailName">
+                </div>
+                <button type="submit" class="btn btn-custom">엑셀 다운로드</button>
+            </form>
+        </div>
+    </div>
+    <br><br>
+    <footer>
+        <address>
+            <p>Gangsan21 M&A</p>
+            <p>[도로명] 경기 성남시 중원구 사기막골로 124 (SKn테크노파크)<br>
+                비즈센터동 7층 706호<br><br>
+                [지번] 경기도 성남시 중원구 상대원동 190-1<br>
+                비즈센터동 7층 706호</p><br>
+            <p>WEB: <a href="https://www.gangsan21.com">www.gangsan21.com</a></p>
+            <p>TEL: 02-2157-8338</p>
+            <p>FAX: 02-2179-8133</p>
+            <p>Blog: <a href="https://blog.naver.com/ghskfen347">blog.naver.com/ghskfen347</a> </p>
+        </address>
+        <br><br><br>
+        <p>© 2023 Gangsan21 M&A. All rights reserved. | Copyrighted by Carefreelife98</p>
+    </footer>
+</div>
+</body>
+</html>

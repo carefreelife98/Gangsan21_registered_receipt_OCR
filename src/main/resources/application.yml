@@ -1,0 +1,49 @@
+server:
+  port: 11000
+
+spring:
+  profiles:
+    active: prod
+
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    prefix: classpath:/templates/
+    suffix: .html
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 742585204077-avvk65839b0j574rv5om9j3k4mht9411.apps.googleusercontent.com
+            client-secret: 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
+
+construct:
+  molit:
+    url: http://apis.data.go.kr/1613000/ConAdminInfoSvc1/GongsiReg
+    secretKey:
+      enc: 5UwPm1xeKmH%2BPT4ORB0ogz2N5lGFCZNsAqzVuRptg1SLJnDIjD%2FxhPh9F33HKje4rvbwFZnqAL0qD2VUb1EcVw%3D%3D
+      dec: 5UwPm1xeKmH+PT4ORB0ogz2N5lGFCZNsAqzVuRptg1SLJnDIjD/xhPh9F33HKje4rvbwFZnqAL0qD2VUb1EcVw==
+
+
+naver:
+  service:
+    url: https://0cgw85rjqx.apigw.ntruss.com/custom/v1/26290/48ef377159094e48c87e9d36f5790ff1179ae173d07075505cb36c09a2493465/general
+    secretKey: T3hFUFZCbkZHeGx4aGZwTUFjSXpnSE1IS3Z3eERhYUs=
+
+  business:
+    url: https://0cgw85rjqx.apigw.ntruss.com/custom/v1/27251/6c818f9d75e8adcd320d5fe82b699cd737c14df774f0501d84e8444316db90ff/infer
+    secretKey: cVVMY3VmVkpuZXNXeGpxWGFCUVZ3ZURvaEhkVW51a3g=
+
+google:
+  sheets:
+    secret: gangsan21-ocr-6e01aae86a2f.json
+
+crawling:
+  url: https://www.kiscon.net/pcm/detail_search.asp?SANGHO=&MAIN_FIELD=&UPCHE_TYPE=&AREA_CODE=

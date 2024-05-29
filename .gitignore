@@ -39,4 +39,9 @@ out/
 ### VS Code ###
 .vscode/
 
+
+
+### Secrets ###
 src/main/resources/application.properties
+src/main/resources/application.yml
+src/main/java/carefree/CarefreeOCR/api/publicapi/worklist

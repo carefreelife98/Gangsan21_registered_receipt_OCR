@@ -2,14 +2,54 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="image/favicon.ico">
     <title>Gangsan21 M&A</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header-image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+        .btn-custom {
+            width: 100%;
+            margin-bottom: 10px;
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        address {
+            color: #adb5bd;
+        }
+        address p {
+            margin: 0;
+        }
+        a {
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
 <div class="container" style="max-width: 600px">
-    <img src="image/gangsan21_logo.png" alt="gangsan21_logo">
+    <img src="image/gangsan21_logo.png" alt="Gangsan21 Logo" class="header-image">
     <div class="py-5 text-center">
         <h1>Gangsan21 M&A</h1>
     </div>
@@ -17,37 +57,34 @@
     <div class="row">
         <div class="col">
             <form action="/upload-form" method="get">
-                <button type="submit">등기 영수증 / 사업자 등록증 OCR</button>
+                <button type="submit" class="btn btn-custom">등기 영수증 / 사업자 등록증 OCR</button>
             </form>
             <form action="/crawler/InputForm" method="get">
-                <button type="submit">웹 크롤링</button>
+                <button type="submit" class="btn btn-custom">웹 크롤링</button>
             </form>
             <form action="/news" method="get">
-                <button type="submit">추후 업데이트 예정</button>
+                <button type="submit" class="btn btn-custom">강산 21 뉴스</button>
+            </form>
+            <form action="/molit" method="get">
+                <button type="submit" class="btn btn-custom">[국토교통부] 건설업체조회 및 Excel 다운로드</button>
             </form>
             <form action="/" method="get">
-                <button type="submit">추후 업데이트 예정</button>
+                <button type="submit" class="btn btn-custom">추후 업데이트 예정</button>
             </form>
             <form action="/" method="get">
-                <button type="submit">추후 업데이트 예정</button>
+                <button type="submit" class="btn btn-custom">추후 업데이트 예정</button>
             </form>
             <form action="/" method="get">
-                <button type="submit">추후 업데이트 예정</button>
-            </form>
-            <form action="/" method="get">
-                <button type="submit">추후 업데이트 예정</button>
+                <button type="submit" class="btn btn-custom">추후 업데이트 예정</button>
             </form>
         </div>
     </div>
     <br><br>
     <footer>
-
-        <!-- 회사 정보 -->
         <address>
             <p>Gangsan21 M&A</p>
             <p>[도로명] 경기 성남시 중원구 사기막골로 124 (SKn테크노파크)<br>
                 비즈센터동 7층 706호<br><br>
-
                 [지번] 경기도 성남시 중원구 상대원동 190-1<br>
                 비즈센터동 7층 706호</p><br>
             <p>WEB: <a href="https://www.gangsan21.com">www.gangsan21.com</a></p>
@@ -56,7 +93,6 @@
             <p>Blog: <a href="https://blog.naver.com/ghskfen347">blog.naver.com/ghskfen347</a> </p>
         </address>
         <br><br><br>
-        <!-- 저작권자 표시 -->
         <p>© 2023 Gangsan21 M&A. All rights reserved. | Copyrighted by Carefreelife98</p>
     </footer>
 </div>
