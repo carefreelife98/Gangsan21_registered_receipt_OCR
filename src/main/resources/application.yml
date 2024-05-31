@@ -26,7 +26,7 @@ spring:
 
 construct:
   molit:
-    url: https://apis.data.go.kr/1613000/ConAdminInfoSvc1/GongsiReg
+    url: http://apis.data.go.kr/1613000/ConAdminInfoSvc1/GongsiReg
     secretKey:
       enc: 5UwPm1xeKmH%2BPT4ORB0ogz2N5lGFCZNsAqzVuRptg1SLJnDIjD%2FxhPh9F33HKje4rvbwFZnqAL0qD2VUb1EcVw%3D%3D
       dec: 5UwPm1xeKmH+PT4ORB0ogz2N5lGFCZNsAqzVuRptg1SLJnDIjD/xhPh9F33HKje4rvbwFZnqAL0qD2VUb1EcVw==

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 
@@ -42,20 +43,25 @@ public class molitController {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
+        // URI 빌더를 사용하여 URI를 구성
+        String uri = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                .path("")
+                .queryParam("pageNo", pageNo)
+                .queryParam("numOfRows", numOfRows)
+                .queryParam("_type", "json")
+                .queryParam("serviceKey", encKey)
+                .queryParam("sDate", sDate)
+                .queryParam("eDate", eDate)
+                .queryParam("ncrAreaName", ncrAreaName)
+                .queryParam("ncrAreaDetailName", ncrAreaDetailName)
+                .build()
+                .toUriString();
+
+        log.warn("Complete URL: " + uri);
+
         String response = webClient
                 .get()
-                .uri(uriBuilder ->
-                        uriBuilder.path("")
-                                .queryParam("serviceKey", encKey)
-                                .queryParam("pageNo", pageNo)
-                                .queryParam("numOfRows", numOfRows)
-                                .queryParam("sDate", sDate)
-                                .queryParam("eDate", eDate)
-                                .queryParam("_type", "json")
-                                .queryParam("ncrAreaName", ncrAreaName)
-                                .queryParam("ncrAreaDetailName", ncrAreaDetailName)
-                                .build()
-                )
+                .uri(uriBuilder -> UriComponentsBuilder.fromHttpUrl(uri).build().toUri())
                 .retrieve()
                 // 여기 전까지가 요청을 정의 한 부분. 아래부터 정의하는건 응답을 어떻게 처리할 것인지
                 .bodyToMono(String.class)    // 응답의 body를 String으로 해석
