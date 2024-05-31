@@ -45,14 +45,13 @@ public class molitController {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-
-        // URI 빌더를 사용하여 URI를 구성 !
+        // URI 빌더를 사용하여 URI를 구성
         String uri = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .path("")
-                .queryParam("pageNo", URLEncoder.encode(pageNo, StandardCharsets.UTF_8))
-                .queryParam("numOfRows", URLEncoder.encode(numOfRows, StandardCharsets.UTF_8))
+                .queryParam("pageNo", pageNo)
+                .queryParam("numOfRows", numOfRows)
                 .queryParam("_type", "json")
-                .queryParam("serviceKey", URLEncoder.encode(decKey, StandardCharsets.UTF_8))
+                .queryParam("serviceKey", encKey)
                 .queryParam("sDate", URLEncoder.encode(sDate, StandardCharsets.UTF_8))
                 .queryParam("eDate", URLEncoder.encode(eDate, StandardCharsets.UTF_8))
                 .queryParam("ncrAreaName", URLEncoder.encode(ncrAreaName, StandardCharsets.UTF_8))
@@ -62,13 +61,13 @@ public class molitController {
 
         log.warn("Complete URL: " + uri);
 
+        // WebClient를 사용하여 요청을 보내고 응답을 받음
         String response = webClient
                 .get()
                 .uri(uriBuilder -> UriComponentsBuilder.fromHttpUrl(uri).build().toUri())
                 .retrieve()
-                // 여기 전까지가 요청을 정의 한 부분. 아래부터 정의하는건 응답을 어떻게 처리할 것인지
-                .bodyToMono(String.class)    // 응답의 body를 String으로 해석
-                .block();    // 동기식으로 처리
+                .bodyToMono(String.class)
+                .block();
         log.info(response);
 
         return excelService.downloadJsonAsExcel(response);
