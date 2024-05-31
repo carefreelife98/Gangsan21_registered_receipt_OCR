@@ -46,7 +46,7 @@ public class molitController {
                 .build();
 
 
-        // URI 빌더를 사용하여 URI를 구성
+        // URI 빌더를 사용하여 URI를 구성 !
         String uri = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .path("")
                 .queryParam("pageNo", URLEncoder.encode(pageNo, StandardCharsets.UTF_8))
