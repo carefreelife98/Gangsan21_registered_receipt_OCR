@@ -51,7 +51,7 @@ public class molitController {
                 .queryParam("pageNo", pageNo)
                 .queryParam("numOfRows", numOfRows)
                 .queryParam("_type", "json")
-                .queryParam("serviceKey", encKey)
+                .queryParam("serviceKey", decKey)
                 .queryParam("sDate", URLEncoder.encode(sDate, StandardCharsets.UTF_8))
                 .queryParam("eDate", URLEncoder.encode(eDate, StandardCharsets.UTF_8))
                 .queryParam("ncrAreaName", URLEncoder.encode(ncrAreaName, StandardCharsets.UTF_8))
