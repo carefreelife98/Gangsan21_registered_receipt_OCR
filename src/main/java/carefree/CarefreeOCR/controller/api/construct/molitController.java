@@ -15,6 +15,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @RestController
@@ -43,13 +45,14 @@ public class molitController {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
+
         // URI 빌더를 사용하여 URI를 구성
         String uri = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .path("")
                 .queryParam("pageNo", pageNo)
                 .queryParam("numOfRows", numOfRows)
                 .queryParam("_type", "json")
-                .queryParam("serviceKey", encKey)
+                .queryParam("serviceKey", URLEncoder.encode(encKey, StandardCharsets.UTF_8))
                 .queryParam("sDate", sDate)
                 .queryParam("eDate", eDate)
                 .queryParam("ncrAreaName", ncrAreaName)
