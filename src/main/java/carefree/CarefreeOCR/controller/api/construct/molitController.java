@@ -46,25 +46,31 @@ public class molitController {
                 .build();
 
         // URI 빌더를 사용하여 URI를 구성
-        String uri = UriComponentsBuilder.fromHttpUrl(apiUrl)
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .path("")
                 .queryParam("pageNo", pageNo)
                 .queryParam("numOfRows", numOfRows)
-                .queryParam("_type", "json")
-                .queryParam("serviceKey", URLEncoder.encode(decKey, StandardCharsets.UTF_8).replace("+", "%2B"))
+                .queryParam("_type", URLEncoder.encode("json", StandardCharsets.UTF_8))
+                .queryParam("serviceKey", URLEncoder.encode(encKey, StandardCharsets.UTF_8).replace("+", "%2B"))
                 .queryParam("sDate", URLEncoder.encode(sDate, StandardCharsets.UTF_8))
-                .queryParam("eDate", URLEncoder.encode(eDate, StandardCharsets.UTF_8))
-                .queryParam("ncrAreaName", URLEncoder.encode(ncrAreaName, StandardCharsets.UTF_8))
-                .queryParam("ncrAreaDetailName", URLEncoder.encode(ncrAreaDetailName, StandardCharsets.UTF_8))
-                .build()
-                .toUriString();
+                .queryParam("eDate", URLEncoder.encode(eDate, StandardCharsets.UTF_8));
+
+        if (ncrAreaName != null && !ncrAreaName.isEmpty()) {
+            uriBuilder.queryParam("ncrAreaName", URLEncoder.encode(ncrAreaName, StandardCharsets.UTF_8));
+        }
+
+        if (ncrAreaDetailName != null && !ncrAreaDetailName.isEmpty()) {
+            uriBuilder.queryParam("ncrAreaDetailName", URLEncoder.encode(ncrAreaDetailName, StandardCharsets.UTF_8));
+        }
+
+        String uri = uriBuilder.build().toUriString();
 
         log.warn("Complete URL: " + uri);
 
         // WebClient를 사용하여 요청을 보내고 응답을 받음
         String response = webClient
                 .get()
-                .uri(uriBuilder -> UriComponentsBuilder.fromHttpUrl(uri).build().toUri())
+                .uri(builder -> UriComponentsBuilder.fromHttpUrl(uri).build().toUri())
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
