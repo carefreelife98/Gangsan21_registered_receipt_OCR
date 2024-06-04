@@ -46,8 +46,12 @@ public class ExcelService {
         List<CellData> headerRow = new ArrayList<>();
         Iterator<String> fieldNames = items.get(0).fieldNames();
 
-        while (FIELD.iterator().hasNext()) {
-            String fieldName = FIELD.iterator().next();
+//        while (FIELD.iterator().hasNext()) {
+//            String fieldName = FIELD.iterator().next();
+//            headerRow.add(new CellData().setUserEnteredValue(new ExtendedValue().setStringValue(fieldName)));
+//        }
+        while (fieldNames.hasNext()) {
+            String fieldName = fieldNames.next();
             headerRow.add(new CellData().setUserEnteredValue(new ExtendedValue().setStringValue(fieldName)));
         }
 
