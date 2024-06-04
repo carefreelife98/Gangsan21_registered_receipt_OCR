@@ -10,13 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.*;
+
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.*;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -27,6 +25,14 @@ public class ExcelService {
 
     @Autowired
     private GoogleSheet googleSheet;
+
+    private final List<String> FIELD = Arrays.asList(
+            "등록시군구", "등록시도", "소재지",
+            "등록일자", "공시내용구분", "업체명",
+            "업체대표자명", "공고번호", "변경사유철회",
+            "공시일자", "공시일련번호", "등록업종",
+            "업종등록번호", "사업자등록번호", "전화번호"
+    );
 
     public void uploadJsonToGoogleSheet(String jsonString) throws IOException, GeneralSecurityException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -39,8 +45,9 @@ public class ExcelService {
         List<Request> requests = new ArrayList<>();
         List<CellData> headerRow = new ArrayList<>();
         Iterator<String> fieldNames = items.get(0).fieldNames();
-        while (fieldNames.hasNext()) {
-            String fieldName = fieldNames.next();
+
+        while (FIELD.iterator().hasNext()) {
+            String fieldName = FIELD.iterator().next();
             headerRow.add(new CellData().setUserEnteredValue(new ExtendedValue().setStringValue(fieldName)));
         }
 
