@@ -119,7 +119,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                데이터를 Google Sheet에 저장하시겠습니까? 저장 후, 외부 링크로 이동합니다.
+                데이터를 Google Sheet에 저장하시겠습니까? 저장 후, 5초 뒤 외부 링크로 이동합니다.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
@@ -137,7 +137,9 @@
         document.getElementById('downloadForm').submit();
 
         // Redirect to external link after form submission
-        window.location.href = 'https://docs.google.com/spreadsheets/d/15Mljgjc21zimCM5XWPmGTULoW93zOwjLLv-xiIezg0g/edit#gid=0';
+        setTimeout(function() {
+            window.location.href = 'https://docs.google.com/spreadsheets/d/15Mljgjc21zimCM5XWPmGTULoW93zOwjLLv-xiIezg0g/edit#gid=0';
+        }, 500); // Adjust the timeout as necessary to ensure the form submission completes
     });
 </script>
 </body>
