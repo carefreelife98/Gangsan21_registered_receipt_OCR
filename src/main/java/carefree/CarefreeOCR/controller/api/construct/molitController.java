@@ -76,7 +76,7 @@ public class molitController {
         // WebClient를 사용하여 요청을 보내고 응답을 받음
         String response = webClient
                 .get()
-                .uri(builder -> UriComponentsBuilder.fromHttpUrl(uri).build().toUri())
+                .uri(builder -> uriBuilder.build().toUri())
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
