@@ -44,7 +44,7 @@ naver:
 
 google:
   sheets:
-    secret: /home/ec2-user/app/gangsan21-ocr-6e01aae86a2f.json
+    secret: gangsan21-ocr-6e01aae86a2f.json
 
 crawling:
   url: https://www.kiscon.net/pcm/detail_search.asp?SANGHO=&MAIN_FIELD=&UPCHE_TYPE=&AREA_CODE=
