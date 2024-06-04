@@ -51,32 +51,42 @@ public class molitController {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        // URI 빌더를 사용하여 URI를 구성
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(apiUrl)
-                .path("")
-                .queryParam("pageNo", pageNo)
-                .queryParam("numOfRows", numOfRows)
-                .queryParam("_type", URLEncoder.encode("json", StandardCharsets.UTF_8))
-                .queryParam("serviceKey", encKey)
-                .queryParam("sDate", URLEncoder.encode(sDate, StandardCharsets.UTF_8))
-                .queryParam("eDate", URLEncoder.encode(eDate, StandardCharsets.UTF_8));
+//        // URI 빌더를 사용하여 URI를 구성
+//        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(apiUrl)
+//                .path("")
+//                .queryParam("pageNo", pageNo)
+//                .queryParam("numOfRows", numOfRows)
+//                .queryParam("_type", URLEncoder.encode("json", StandardCharsets.UTF_8))
+//                .queryParam("serviceKey", encKey)
+//                .queryParam("sDate", URLEncoder.encode(sDate, StandardCharsets.UTF_8))
+//                .queryParam("eDate", URLEncoder.encode(eDate, StandardCharsets.UTF_8));
+//
+//        if (ncrAreaName != null && !ncrAreaName.isEmpty()) {
+//            uriBuilder.queryParam("ncrAreaName", URLEncoder.encode(ncrAreaName, StandardCharsets.UTF_8));
+//        }
+//
+//        if (ncrAreaDetailName != null && !ncrAreaDetailName.isEmpty()) {
+//            uriBuilder.queryParam("ncrAreaDetailName", URLEncoder.encode(ncrAreaDetailName, StandardCharsets.UTF_8));
+//        }
+//
+//        String uri = uriBuilder.build().toUriString();
 
-        if (ncrAreaName != null && !ncrAreaName.isEmpty()) {
-            uriBuilder.queryParam("ncrAreaName", URLEncoder.encode(ncrAreaName, StandardCharsets.UTF_8));
-        }
-
-        if (ncrAreaDetailName != null && !ncrAreaDetailName.isEmpty()) {
-            uriBuilder.queryParam("ncrAreaDetailName", URLEncoder.encode(ncrAreaDetailName, StandardCharsets.UTF_8));
-        }
-
-        String uri = uriBuilder.build().toUriString();
-
-        log.warn("Complete URL: " + uri);
+//        log.warn("Complete URL: " + uri);
 
         // WebClient를 사용하여 요청을 보내고 응답을 받음
         String response = webClient
                 .get()
-                .uri(builder -> uriBuilder.build().toUri())
+                .uri(builder ->
+                        builder
+                        .queryParam("pageNo", pageNo)
+                        .queryParam("numOfRows", numOfRows)
+                        .queryParam("_type", "json")
+                        .queryParam("serviceKey", encKey)
+                        .queryParam("sDate", sDate)
+                        .queryParam("eDate", eDate)
+                        .queryParam("ncrAreaName", ncrAreaName)
+                        .queryParam("ncrAreaDetailName", ncrAreaDetailName)
+                        .build())
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
