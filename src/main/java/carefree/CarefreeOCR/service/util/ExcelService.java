@@ -41,7 +41,7 @@ public class ExcelService {
 
         Sheets sheetsService = googleSheet.getSheetsService();
 
-        // Create header row
+        // 각 행별 구분 요소 추가 (헤더)
         List<Request> requests = new ArrayList<>();
         List<CellData> headerRow = new ArrayList<>();
         Iterator<String> fieldNames = items.get(0).fieldNames();
@@ -56,7 +56,7 @@ public class ExcelService {
                 .setRows(Collections.singletonList(new RowData().setValues(headerRow)))
                 .setFields("userEnteredValue")));
 
-        // Populate rows with data
+        // 헤더 밑의 행부터 데이터 인입.
         int rowNum = 1;
         for (JsonNode item : items) {
             List<CellData> row = new ArrayList<>();
