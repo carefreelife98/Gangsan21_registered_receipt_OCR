@@ -46,6 +46,8 @@ dependencies {
 
 	// Excel
 	implementation group: 'org.apache.poi', name: 'poi', version: '5.2.3'
+	// Google Sheet
+	implementation group: 'com.google.http-client', name: 'google-http-client-jackson2', version: '1.42.3'
 
 	// WebClient
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'

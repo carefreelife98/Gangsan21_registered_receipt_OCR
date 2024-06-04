@@ -5,6 +5,7 @@ import carefree.CarefreeOCR.api.NaverOcrApi;
 import carefree.CarefreeOCR.api.NaverOcrApiBusiness;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,13 +32,16 @@ public class uploadController {
     @Value("${naver.business.secretKey}")
     private String secretKeyBusiness;
 
+    @Autowired
+    private GoogleSheet googleSheet;
+
     private List<String> exceptions = new ArrayList<>();
 
     private final NaverOcrApi naverApi;
     private final NaverOcrApiBusiness naverBusinessApi;
     ArrayList<String> afterFmt = new ArrayList<>();
     String date = "";
-    private static final String[] REGIONS = {
+    private final String[] REGIONS = {
             "서울특별시",
             "부산광역시",
             "대구광역시",
@@ -65,7 +70,7 @@ public class uploadController {
 
     // 파일 업로드 및 OCR 수행을 위한 POST 요청 핸들러 메서드
     @PostMapping("/uploadAndOcr")
-    public String uploadAndOcr(@RequestParam("files") List<MultipartFile> files, Model model) throws IOException {
+    public String uploadAndOcr(@RequestParam("files") List<MultipartFile> files, Model model) throws IOException, GeneralSecurityException {
         for (MultipartFile file : files) {
             if (file.isEmpty()) {
                 return "error"; // 파일이 비어있을 경우 에러를 처리하는 HTML 템플릿으로 이동
@@ -168,7 +173,7 @@ public class uploadController {
                 }
                 toGSheet.add(temp);
             }
-            GoogleSheet.updateValues(date, "1UADUNDLfmaQLJ1woHzVs9sq2HyScmfLla4lKvjaAwy8", "A1:G1000", "RAW", toGSheet);
+            googleSheet.updateValues(date, "1UADUNDLfmaQLJ1woHzVs9sq2HyScmfLla4lKvjaAwy8", "A1:G1000", "RAW", toGSheet);
         }
         log.info(concatString(exceptions));
         exceptions.clear();
@@ -176,7 +181,7 @@ public class uploadController {
     }
 
     @PostMapping("/ocrBusiness")
-    public String uploadAndOcrBusiness(@RequestParam("files") List<MultipartFile> files, Model model) throws IOException {
+    public String uploadAndOcrBusiness(@RequestParam("files") List<MultipartFile> files, Model model) throws IOException, GeneralSecurityException {
         for (MultipartFile file : files) {
             if (file.isEmpty()) {
                 return "error"; // 파일이 비어있을 경우 에러를 처리하는 HTML 템플릿으로 이동
@@ -213,7 +218,7 @@ public class uploadController {
             }
             toGSheet.add(temp);
 
-            GoogleSheet.updateValues("시트1", "1ucw8wIlZosXmskTX61odE_CnX8WnEjw9q_Oggj8WwQY", "A1:J1000", "RAW", toGSheet);
+            googleSheet.updateValues("시트1", "1ucw8wIlZosXmskTX61odE_CnX8WnEjw9q_Oggj8WwQY", "A1:J1000", "RAW", toGSheet);
         }
         log.info(concatString(exceptions));
         exceptions.clear();

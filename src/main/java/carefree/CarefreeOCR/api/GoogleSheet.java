@@ -1,49 +1,53 @@
 package carefree.CarefreeOCR.api;
 
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.*;
-import com.google.auth.http.HttpCredentialsAdapter;
-import com.google.auth.oauth2.GoogleCredentials;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 
 @Slf4j
 @Component
 public class GoogleSheet {
-    private static HttpRequestInitializer requestInitializer;
+//    private static HttpRequestInitializer requestInitializer;
+//    public GoogleSheet() throws IOException {
+//        this.requestInitializer = new HttpCredentialsAdapter(
+//                GoogleCredentials.fromStream(new FileInputStream(secret))
+//                        .createScoped(Collections.singletonList("https://www.googleapis.com/auth/spreadsheets"))
+//        );
+//    }
 
     @Value("${google.sheets.secret}")
     private String secret;
 
-    public GoogleSheet() throws IOException {
-        this.requestInitializer = new HttpCredentialsAdapter(
-                GoogleCredentials.fromStream(new FileInputStream("/home/ec2-user/app/gangsan21-ocr-6e01aae86a2f.json"))
-                        .createScoped(Collections.singletonList("https://www.googleapis.com/auth/spreadsheets"))
-        );
+    public Sheets getSheetsService() throws IOException, GeneralSecurityException {
+        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(secret))
+                .createScoped(Collections.singleton("https://www.googleapis.com/auth/spreadsheets"));
+
+        return new Sheets.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), credential)
+                .setApplicationName("Google Sheets API")
+                .build();
     }
+
 
     // UpdateValuesResponse : 기존 셀에 덮어 쓰기
     // AppendValuesResponse : 기존 셀 끝에 이어 쓰기
     // 데이터 반환 타입만 변경해주면 기능 변경 가능.
-    public static AppendValuesResponse updateValues(String sheetTitle,
-                                                    String spreadsheetId,
-                                                    String range,
-                                                    String valueInputOption,
-                                                    List<List<Object>> values) throws IOException {
-        Sheets service = new Sheets.Builder(new NetHttpTransport(),
-                GsonFactory.getDefaultInstance(),
-                requestInitializer)
-                .setApplicationName("Sheets samples")
-                .build();
+    public void updateValues(String sheetTitle,
+            String spreadsheetId,
+            String range,
+            String valueInputOption,
+            List<List<Object>> values) throws IOException, GeneralSecurityException {
+        Sheets service = getSheetsService();
 
         // 시트를 추가
         SheetProperties addedSheetProperties = addSheet(service, sheetTitle, spreadsheetId);
@@ -53,7 +57,7 @@ public class GoogleSheet {
 
         // spreadsheetId 와 range 를 합쳐 update 할 위치를 지정 (Spreadsheet 이름 ! 시작 셀 : 끝 셀)
         // 예: 2023-12-28!A1:G1000
-        return service.spreadsheets().values().append(spreadsheetId, sheetTitle + "!" + range, body)
+        service.spreadsheets().values().append(spreadsheetId, sheetTitle + "!" + range, body)
                 .setValueInputOption(valueInputOption)
                 .execute();
     }
