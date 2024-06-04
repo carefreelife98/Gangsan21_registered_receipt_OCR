@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
@@ -39,7 +40,13 @@ public class molitController {
                                                     @RequestParam String sDate, @RequestParam String eDate,
                                                     @RequestParam(required = false) String ncrAreaName,
                                                     @RequestParam(required = false) String ncrAreaDetailName ) throws IOException {
+
+        // WebClient 에서 인코딩 과정을 따로 수행하지 않도록 하기 위함 (공공 API 사용 시 API Key 값이 인코딩에 의해 자동으로 변경되는 문제 방지)
+        DefaultUriBuilderFactory defaultUriBuilderFactory = new DefaultUriBuilderFactory(apiUrl);
+        defaultUriBuilderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
+
         WebClient webClient = WebClient.builder()
+                .uriBuilderFactory(defaultUriBuilderFactory)
                 .baseUrl(apiUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
