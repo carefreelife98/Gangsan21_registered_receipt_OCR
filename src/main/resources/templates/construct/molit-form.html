@@ -61,7 +61,7 @@
     <br><br>
     <div class="row">
         <div class="col">
-            <form action="/construct/info/molit/download" method="post">
+            <form id="downloadForm" action="/construct/info/molit/download" method="post">
                 <div class="form-group">
                     <label for="pageNo">페이지 수</label>
                     <input type="text" class="form-control" id="pageNo" name="pageNo" required>
@@ -86,7 +86,7 @@
                     <label for="ncrAreaDetailName">등록 시/군/구 (Optional)</label>
                     <input type="text" class="form-control" id="ncrAreaDetailName" name="ncrAreaDetailName">
                 </div>
-                <button type="submit" class="btn btn-custom">엑셀 다운로드</button>
+                <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#confirmationModal">Google Sheet 에 저장하기</button>
             </form>
         </div>
     </div>
@@ -107,5 +107,38 @@
         <p>© 2023 Gangsan21 M&A. All rights reserved. | Copyrighted by Carefreelife98</p>
     </footer>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Submission</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                데이터를 Google Sheet에 저장하시겠습니까? 저장 후, 외부 링크로 이동합니다.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary" id="confirmButton">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('confirmButton').addEventListener('click', function () {
+        // Submit the form
+        document.getElementById('downloadForm').submit();
+
+        // Redirect to external link after form submission
+        window.location.href = 'https://docs.google.com/spreadsheets/d/15Mljgjc21zimCM5XWPmGTULoW93zOwjLLv-xiIezg0g/edit#gid=0';
+    });
+</script>
 </body>
 </html>
