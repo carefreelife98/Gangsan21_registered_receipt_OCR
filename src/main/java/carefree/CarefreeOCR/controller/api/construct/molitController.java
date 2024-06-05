@@ -32,12 +32,12 @@ public class molitController {
     private ExcelService excelService;
 
     @RequestMapping(value = "/download", method = RequestMethod.POST)
-    public void getMOLITCorpInfos(@RequestParam String pageNo, @RequestParam String numOfRows,
+    public void getMOLITCorpInfos(@RequestParam String numOfRows,
                                                     @RequestParam String sDate, @RequestParam String eDate,
                                                     @RequestParam(required = false) String ncrAreaName,
                                                     @RequestParam(required = false) String ncrAreaDetailName ) throws GeneralSecurityException, IOException {
 
-        String molitData = molitService.getMolitData(pageNo, numOfRows, sDate, eDate, ncrAreaName, ncrAreaDetailName);
+        String molitData = molitService.getMolitData(numOfRows, sDate, eDate, ncrAreaName, ncrAreaDetailName);
         excelService.uploadJsonToGoogleSheet(molitData);
     }
 }

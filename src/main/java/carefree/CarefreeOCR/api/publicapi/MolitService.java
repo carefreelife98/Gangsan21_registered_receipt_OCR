@@ -22,7 +22,7 @@ public class MolitService {
 	private String decKey;
 
 	public String getMolitData(
-			String pageNo, String numOfRows,
+			String numOfRows,
 			String sDate, String eDate,
 			String ncrAreaName, String ncrAreaDetailName
 	) {
@@ -41,7 +41,7 @@ public class MolitService {
 				.get()
 				.uri(builder ->
 						builder
-								.queryParam("pageNo", pageNo)
+								.queryParam("pageNo", "1")
 								.queryParam("numOfRows", numOfRows)
 								.queryParam("_type", "json")
 								.queryParam("serviceKey", encKey)

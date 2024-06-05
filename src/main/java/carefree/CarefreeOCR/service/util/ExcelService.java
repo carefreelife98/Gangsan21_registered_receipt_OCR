@@ -41,15 +41,17 @@ public class ExcelService {
 
         Sheets sheetsService = googleSheet.getSheetsService();
 
+        // 정적 데이터 삽입
+        List<CellData> staticRow = new ArrayList<>();
+        for (String data : FIELD) {
+            staticRow.add(new CellData().setUserEnteredValue(new ExtendedValue().setStringValue(data)));
+        }
+
         // 각 행별 구분 요소 추가 (헤더)
         List<Request> requests = new ArrayList<>();
         List<CellData> headerRow = new ArrayList<>();
         Iterator<String> fieldNames = items.get(0).fieldNames();
 
-//        while (FIELD.iterator().hasNext()) {
-//            String fieldName = FIELD.iterator().next();
-//            headerRow.add(new CellData().setUserEnteredValue(new ExtendedValue().setStringValue(fieldName)));
-//        }
         while (fieldNames.hasNext()) {
             String fieldName = fieldNames.next();
             headerRow.add(new CellData().setUserEnteredValue(new ExtendedValue().setStringValue(fieldName)));
@@ -85,63 +87,4 @@ public class ExcelService {
         BatchUpdateSpreadsheetRequest batchUpdateRequest = new BatchUpdateSpreadsheetRequest().setRequests(requests);
         sheetsService.spreadsheets().batchUpdate(sheetId, batchUpdateRequest).execute();
     }
-
-
-
-    //    public ResponseEntity<byte[]> downloadJsonAsExcel(String jsonString) throws IOException {
-//        // JSON 응답을 파싱합니다.
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        JsonNode root = objectMapper.readTree(jsonString);
-//        JsonNode items = root.path("response").path("body").path("items").path("item");
-//
-//        // Create Excel workbook and sheet
-//        Workbook workbook = new XSSFWorkbook();
-//        Sheet sheet = workbook.createSheet("강산21_국토교통부_키스콘_건설업체정보");
-//
-//        // Create header row
-//        Row headerRow = sheet.createRow(0);
-//        Iterator<String> fieldNames = items.get(0).fieldNames();
-//        int colNum = 0;
-//        while (fieldNames.hasNext()) {
-//            String fieldName = fieldNames.next();
-//            Cell cell = headerRow.createCell(colNum++);
-//            cell.setCellValue(fieldName);
-//        }
-//
-//        // Populate rows with data
-//        int rowNum = 1;
-//        for (JsonNode item : items) {
-//            Row row = sheet.createRow(rowNum++);
-//            colNum = 0;
-//            fieldNames = item.fieldNames();
-//            while (fieldNames.hasNext()) {
-//                String fieldName = fieldNames.next();
-//                Cell cell = row.createCell(colNum++);
-//                JsonNode value = item.get(fieldName);
-//                if (value.isTextual()) {
-//                    cell.setCellValue(value.asText());
-//                } else if (value.isInt()) {
-//                    cell.setCellValue(value.asInt());
-//                } else if (value.isLong()) {
-//                    cell.setCellValue(value.asLong());
-//                }
-//            }
-//        }
-//
-//        // Write the output to a byte array
-//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//        workbook.write(bos);
-//        workbook.close();
-//
-//        byte[] excelBytes = bos.toByteArray();
-//
-//        // Create the response entity
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-//        headers.setContentDispositionFormData("attachment", "items.xlsx");
-//
-//        return ResponseEntity.ok()
-//                .headers(headers)
-//                .body(excelBytes);
-//    }
 }
