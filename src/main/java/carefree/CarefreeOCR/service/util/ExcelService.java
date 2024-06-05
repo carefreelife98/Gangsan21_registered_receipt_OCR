@@ -41,16 +41,22 @@ public class ExcelService {
 
         Sheets sheetsService = googleSheet.getSheetsService();
 
+
+        // 각 행별 구분 요소 추가 (헤더)
+        List<Request> requests = new ArrayList<>();
+        List<CellData> headerRow = new ArrayList<>();
+        Iterator<String> fieldNames = items.get(0).fieldNames();
+
         // 정적 데이터 삽입
         List<CellData> staticRow = new ArrayList<>();
         for (String data : FIELD) {
             staticRow.add(new CellData().setUserEnteredValue(new ExtendedValue().setStringValue(data)));
         }
 
-        // 각 행별 구분 요소 추가 (헤더)
-        List<Request> requests = new ArrayList<>();
-        List<CellData> headerRow = new ArrayList<>();
-        Iterator<String> fieldNames = items.get(0).fieldNames();
+        requests.add(new Request().setUpdateCells(new UpdateCellsRequest()
+                .setStart(new GridCoordinate().setSheetId(0).setRowIndex(0).setColumnIndex(0))
+                .setRows(Collections.singletonList(new RowData().setValues(staticRow)))
+                .setFields("userEnteredValue")));
 
         while (fieldNames.hasNext()) {
             String fieldName = fieldNames.next();
