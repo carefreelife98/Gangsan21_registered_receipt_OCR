@@ -27,6 +27,9 @@ public class ConstructExcelService {
     @Autowired
     private GoogleSheet googleSheet;
 
+    @Autowired
+    private ConstructExcelUtilService constructExcelUtilService;
+
     private final List<String> MOLIT_FIELD = Arrays.asList(
             "등록시군구", "등록시도", "소재지",
             "등록일자", "공시내용구분", "업체명",
@@ -35,13 +38,23 @@ public class ConstructExcelService {
             "업종등록번호", "사업자등록번호", "전화번호"
     );
 
-    public void uploadMolitJsonToGoogleSheet(String jsonString) throws IOException, GeneralSecurityException {
+    public void uploadMolitJsonToGoogleSheet(String jsonString, Integer numOfRows) throws IOException, GeneralSecurityException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode root = objectMapper.readTree(jsonString);
         JsonNode items = root.path("response").path("body").path("items").path("item");
 
         Sheets sheetsService = googleSheet.getSheetsService();
 
+        // 시트 기본 행수는 999 이므로 그 이상의 데이터가 요구되면 Row 수를 늘려주어야 한다.
+        if (numOfRows >= 900) {
+            Integer sheetId =
+                    sheetsService
+                    .spreadsheets().get(MOLIT_SHEET_ID).execute()
+                    .getSheets().get(0).getProperties().getSheetId();
+
+            int addRows = numOfRows - 900;
+            constructExcelUtilService.addRowsToSheet(sheetsService, MOLIT_SHEET_ID, sheetId, addRows);
+        }
 
         // 각 행별 구분 요소 추가 (헤더)
         List<Request> requests = new ArrayList<>();
@@ -95,10 +108,23 @@ public class ConstructExcelService {
         sheetsService.spreadsheets().batchUpdate(MOLIT_SHEET_ID, batchUpdateRequest).execute();
     }
 
-    public void uploadKicaJsonToGoogleSheet(String jsonString) throws IOException, GeneralSecurityException {
+    public void uploadKicaJsonToGoogleSheet(String jsonString, int size) throws IOException, GeneralSecurityException {
+        Sheets sheetsService = googleSheet.getSheetsService();
+
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(jsonString);
         JsonNode dataNode = rootNode.path("data").path("list");
+
+        // 시트 기본 행수는 999 이므로 그 이상의 데이터가 요구되면 Row 수를 늘려주어야 한다.
+        if (size >= 900) {
+            Integer sheetId =
+                    sheetsService
+                            .spreadsheets().get(KICA_SHEET_ID).execute()
+                            .getSheets().get(0).getProperties().getSheetId();
+
+            int addRows = size - 900;
+            constructExcelUtilService.addRowsToSheet(sheetsService, KICA_SHEET_ID, sheetId, addRows);
+        }
 
         List<List<Object>> request = new ArrayList<>();
         List<Object> header = List.of("registNo", "firmNmKor", "repNmKor", "phoneNoOffice", "ranking", "addr", "expelYn", "evalAmt", "rankTot", "id");
@@ -120,7 +146,6 @@ public class ConstructExcelService {
         }
 
         ValueRange body = new ValueRange().setValues(request);
-        Sheets sheetsService = googleSheet.getSheetsService();
         sheetsService.spreadsheets().values().update(KICA_SHEET_ID, "KicaSheet", body)
                 .setValueInputOption("RAW")
                 .execute();

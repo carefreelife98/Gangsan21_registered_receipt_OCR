@@ -35,8 +35,8 @@ public class ConstructController {
             @RequestParam(required = false) String ncrAreaName,
             @RequestParam(required = false) String ncrAreaDetailName) throws GeneralSecurityException, IOException {
 
-        String molitData = molitService.getMolitData(numOfRows, sDate, eDate, ncrAreaName, ncrAreaDetailName);
-        constructExcelService.uploadMolitJsonToGoogleSheet(molitData);
+        String molitData = molitService.getMolitData(numOfRows.trim(), sDate, eDate, ncrAreaName.trim(), ncrAreaDetailName.trim());
+        constructExcelService.uploadMolitJsonToGoogleSheet(molitData, Integer.parseInt(numOfRows.trim()));
     }
 
     @RequestMapping(value = "/kica/download", method = RequestMethod.GET)
@@ -47,8 +47,8 @@ public class ConstructController {
             @RequestParam(required = false) String searchSido) throws GeneralSecurityException, IOException {
 
         if (searchType.length() == 1 || searchType.isEmpty()) {
-            String kicaData = kicaService.getKicaData(size, searchType, searchText, searchSido);
-            constructExcelService.uploadKicaJsonToGoogleSheet(kicaData);
+            String kicaData = kicaService.getKicaData(size.trim(), searchType.trim(), searchText.trim(), searchSido.trim());
+            constructExcelService.uploadKicaJsonToGoogleSheet(kicaData, Integer.parseInt(size.trim()));
         } else {
             log.error("SearchType 파라미터가 잘못 되었습니다. SearchType:[{}]", searchType);
         }
