@@ -52,8 +52,7 @@ public class ConstructExcelService {
                     .spreadsheets().get(MOLIT_SHEET_ID).execute()
                     .getSheets().get(0).getProperties().getSheetId();
 
-            int addRows = numOfRows - 900;
-            constructExcelUtilService.addRowsToSheet(sheetsService, MOLIT_SHEET_ID, sheetId, addRows);
+            constructExcelUtilService.addRowsToSheet(sheetsService, MOLIT_SHEET_ID, sheetId, numOfRows + 5);
         }
 
         // 각 행별 구분 요소 추가 (헤더)
@@ -122,8 +121,7 @@ public class ConstructExcelService {
                             .spreadsheets().get(KICA_SHEET_ID).execute()
                             .getSheets().get(0).getProperties().getSheetId();
 
-            int addRows = size - 900;
-            constructExcelUtilService.addRowsToSheet(sheetsService, KICA_SHEET_ID, sheetId, addRows);
+            constructExcelUtilService.addRowsToSheet(sheetsService, KICA_SHEET_ID, sheetId, size + 5);
         }
 
         List<List<Object>> request = new ArrayList<>();
