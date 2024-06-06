@@ -5,11 +5,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "/molit")
-public class MolitFormController {
+@RequestMapping(value = "/construct")
+public class ConstructFormController {
 
-    @GetMapping()
+    @GetMapping
+    public String getConstructForm() {
+        return "construct/construct-home";
+    }
+
+    @GetMapping(value = "/molit")
     public String getMolitIndexPage() {
         return "construct/molit-form";
     }
+
 }

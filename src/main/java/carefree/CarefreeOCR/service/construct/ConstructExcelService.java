@@ -1,32 +1,33 @@
-package carefree.CarefreeOCR.service.util;
+package carefree.CarefreeOCR.service.construct;
 
 import carefree.CarefreeOCR.api.GoogleSheet;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import java.io.IOException;
-import java.util.*;
 
-import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.model.*;
+import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.*;
 
 @Slf4j
 @Service
-public class ExcelService {
+public class ConstructExcelService {
 
     @Value("${construct.molit.sheet}")
-    private String sheetId;
+    private String MOLIT_SHEET_ID;
+
+    @Value("${construct.kica.sheet}")
+    private String KICA_SHEET_ID;
 
     @Autowired
     private GoogleSheet googleSheet;
 
-    private final List<String> FIELD = Arrays.asList(
+    private final List<String> MOLIT_FIELD = Arrays.asList(
             "등록시군구", "등록시도", "소재지",
             "등록일자", "공시내용구분", "업체명",
             "업체대표자명", "공고번호", "변경사유철회",
@@ -34,7 +35,7 @@ public class ExcelService {
             "업종등록번호", "사업자등록번호", "전화번호"
     );
 
-    public void uploadJsonToGoogleSheet(String jsonString) throws IOException, GeneralSecurityException {
+    public void uploadMolitJsonToGoogleSheet(String jsonString) throws IOException, GeneralSecurityException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode root = objectMapper.readTree(jsonString);
         JsonNode items = root.path("response").path("body").path("items").path("item");
@@ -49,7 +50,7 @@ public class ExcelService {
 
         // 정적 데이터 삽입
         List<CellData> staticRow = new ArrayList<>();
-        for (String data : FIELD) {
+        for (String data : MOLIT_FIELD) {
             staticRow.add(new CellData().setUserEnteredValue(new ExtendedValue().setStringValue(data)));
         }
 
@@ -64,7 +65,7 @@ public class ExcelService {
         }
 
         requests.add(new Request().setUpdateCells(new UpdateCellsRequest()
-                .setStart(new GridCoordinate().setSheetId(0).setRowIndex(0).setColumnIndex(0))
+                .setStart(new GridCoordinate().setSheetId(0).setRowIndex(1).setColumnIndex(1))
                 .setRows(Collections.singletonList(new RowData().setValues(headerRow)))
                 .setFields("userEnteredValue")));
 
@@ -91,6 +92,37 @@ public class ExcelService {
         }
 
         BatchUpdateSpreadsheetRequest batchUpdateRequest = new BatchUpdateSpreadsheetRequest().setRequests(requests);
-        sheetsService.spreadsheets().batchUpdate(sheetId, batchUpdateRequest).execute();
+        sheetsService.spreadsheets().batchUpdate(MOLIT_SHEET_ID, batchUpdateRequest).execute();
+    }
+
+    public void uploadKicaJsonToGoogleSheet(String jsonString) throws IOException, GeneralSecurityException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonString);
+        JsonNode dataNode = rootNode.path("data").path("list");
+
+        List<List<Object>> request = new ArrayList<>();
+        List<Object> header = List.of("registNo", "firmNmKor", "repNmKor", "phoneNoOffice", "ranking", "addr", "expelYn", "evalAmt", "rankTot", "id");
+        request.add(header);
+
+        for (JsonNode node : dataNode) {
+            List<Object> row = new ArrayList<>();
+            row.add(node.path("registNo").asText());
+            row.add(node.path("firmNmKor").asText());
+            row.add(node.path("repNmKor").asText());
+            row.add(node.path("phoneNoOffice").asText());
+            row.add(node.path("ranking").asInt());
+            row.add(node.path("addr").asText());
+            row.add(node.path("expelYn").asText());
+            row.add(node.path("evalAmt").asText().trim());
+            row.add(node.path("rankTot").asInt());
+            row.add(node.path("id").asLong());
+            request.add(row);
+        }
+
+        ValueRange body = new ValueRange().setValues(request);
+        Sheets sheetsService = googleSheet.getSheetsService();
+        sheetsService.spreadsheets().values().update(KICA_SHEET_ID, "Sheet1!A1", body)
+                .setValueInputOption("RAW")
+                .execute();
     }
 }

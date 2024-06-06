@@ -8,6 +8,14 @@
 (Decoding)
 - 5UwPm1xeKmH+PT4ORB0ogz2N5lGFCZNsAqzVuRptg1SLJnDIjD/xhPh9F33HKje4rvbwFZnqAL0qD2VUb1EcVw==
 
-2. 한국전기공사협회
 3. 한국정보통신공사협회
+<select class="fsel wp100" id="searchType" name="searchType" title="상호 선택">
+    <option value="1">상호</option>
+    <option value="2">대표자</option>
+    <option value="4">등록번호</option>
+    <option value="5">주소</option>
+    <option value="6">주력 공사분야</option>
+</select>
+
+
 4. 한국소방시설협회

@@ -1,4 +1,4 @@
-package carefree.CarefreeOCR.api.publicapi;
+package carefree.CarefreeOCR.api.publicapi.construct;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

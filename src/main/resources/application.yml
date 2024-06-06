@@ -32,6 +32,10 @@ construct:
       dec: 5UwPm1xeKmH+PT4ORB0ogz2N5lGFCZNsAqzVuRptg1SLJnDIjD/xhPh9F33HKje4rvbwFZnqAL0qD2VUb1EcVw==
     sheet: 15Mljgjc21zimCM5XWPmGTULoW93zOwjLLv-xiIezg0g
 
+  kica:
+    url: https://ictis.kica.or.kr/construct/compList
+    sheet: 1-xptbYIAgJtEEGfM5ePtHZmwYQWx9zOGs-DDEkKUsg4
+
 
 naver:
   service:

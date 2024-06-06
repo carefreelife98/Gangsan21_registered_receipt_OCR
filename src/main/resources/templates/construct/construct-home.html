@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>Pricing example for Bootstrap</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/pricing/">
+
+    <!-- Bootstrap core CSS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+
+<!--<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">-->
+<!--    <h5 class="my-0 mr-md-auto font-weight-normal">Company name</h5>-->
+<!--    <nav class="my-2 my-md-0 mr-md-3">-->
+<!--        <a class="p-2 text-dark" href="#">Features</a>-->
+<!--        <a class="p-2 text-dark" href="#">Enterprise</a>-->
+<!--        <a class="p-2 text-dark" href="#">Support</a>-->
+<!--        <a class="p-2 text-dark" href="#">Pricing</a>-->
+<!--    </nav>-->
+<!--    <a class="btn btn-outline-primary" href="#">Sign up</a>-->
+<!--</div>-->
+<img src="image/gangsan21_logo.png" alt="Gangsan21 Logo" class="header-image">
+<div class="py-5 text-center">
+    <h1>Gangsan21 M&A</h1>
+</div>
+<br><br>
+<div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">건설업체 조회</h1>
+    <p class="lead">
+        <small class="text-muted">1. 국토교통부-Kiscon</small><br>
+        <small class="text-muted">2. 한국전기공사협회</small><br>
+        <small class="text-muted">3. 한국정보통신공사협회</small><br>
+        <small class="text-muted">4. 한국소방시설협회</small><br>
+        위 네 곳에서 제공하는 건설 업체 데이터 조회 및 Google Sheet 저장이 가능합니다.
+    </p>
+</div>
+
+<div class="container">
+    <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">국토교통부 (Kiscon) 건설업체조회</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title">설정 정보 <small class="text-muted">Parameters</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>탐색할 업체 수</li>
+                    <li>검색조건기간 공시기간시작일</li>
+                    <li>검색조건기간 공시기간종료일</li>
+                    <li>등록 시/도 (선택)</li>
+                    <li>등록 시/군/구 (선택)</li>
+                </ul>
+                <button id="molit-button" type="button" class="btn btn-lg btn-block btn-outline-primary"></button>
+            </div>
+        </div>
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">한국정보통신공사협회 (Kica) 건설업체조회</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title">설정 정보 <small class="text-muted">Parameters</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>탐색할 업체 수</li>
+                    <li>검색조건: 상호, 대표자, 등록번호, 주소, 주력 공사분야</li>
+                    <li>등록 시/도 (선택)</li>
+                </ul>
+                <button id="kica-button" type="button" class="btn btn-lg btn-block btn-outline-primary"></button>
+            </div>
+        </div>
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">temp 건설업체조회</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title">설정 정보 <small class="text-muted">Parameters</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>-</li>
+                    <li>-</li>
+                    <li>-</li>
+                    <li>-</li>
+                    <li>-</li>
+                </ul>
+                <button id="temp-button" type="button" class="btn btn-lg btn-block btn-outline-primary"></button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <address>
+            <p>Gangsan21 M&A</p>
+            <p>[도로명] 경기 성남시 중원구 사기막골로 124 (SKn테크노파크)<br>
+                비즈센터동 7층 706호<br><br>
+                [지번] 경기도 성남시 중원구 상대원동 190-1<br>
+                비즈센터동 7층 706호</p><br>
+            <p>WEB: <a href="https://www.gangsan21.com">www.gangsan21.com</a></p>
+            <p>TEL: 02-2157-8338</p>
+            <p>FAX: 02-2179-8133</p>
+            <p>Blog: <a href="https://blog.naver.com/ghskfen347">blog.naver.com/ghskfen347</a> </p>
+        </address>
+        <br><br><br>
+        <p>© 2023 Gangsan21 M&A. All rights reserved. | Copyrighted by Carefreelife98</p>
+    </footer>
+</div>
+
+<script>
+    // 국토 교통부 조회 버튼
+    document.getElementById('molit-button').addEventListener('click', function() {
+        window.location.href = 'http://gangsan21-ocr.site/molit';
+    });
+</script>
+
+</body>
+</html>

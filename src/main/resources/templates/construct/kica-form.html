@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="image/favicon.ico">
+    <title>Gangsan21 M&A</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header-image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+        .btn-custom {
+            width: 100%;
+            margin-bottom: 10px;
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        address {
+            color: #adb5bd;
+        }
+        address p {
+            margin: 0;
+        }
+        a {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+    <img src="image/gangsan21_logo.png" alt="Gangsan21 Logo" class="header-image">
+    <div class="py-5 text-center">
+        <h3>[한국정보통신공사협회] 건설업체 정보조회</h3>
+        
+        <p>원활한 검색 속도를 위해서 적절한 업체 수를 설정하여 주시기 바랍니다. (10000개 테스트 성공)</p>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col">
+            <form id="downloadForm" action="/construct/info/kica/download" method="get">
+                <div class="form-group">
+                    <label for="size">탐색할 업체 수</label>
+                    <input type="text" class="form-control" id="size" name="size" required>
+                </div>
+                <div class="form-group">
+                    <label for="searchType">검색 타입 (Optional)</label>
+                    <input type="text" class="form-control" id="searchType" name="searchType">
+                </div>
+                <div class="form-group">
+                    <label for="searchText">검색어 입력 (Optional)</label>
+                    <input type="text" class="form-control" id="searchText" name="searchText">
+                </div>
+                <div class="form-group">
+                    <label for="searchSido">등록 시/도 (Optional)</label>
+                </div>
+                <div>
+                    <select class="form-control" id="searchSido" title="시·도회 선택" name="searchSido">
+                        <option value="">전체</option>-->
+                        <option value="00">서울시회</option>
+                        <option value="22">경기도회</option>
+                        <option value="11">부산·울산·경남도회</option>
+                        <option value="33">대구·경북도회</option>
+                        <option value="44">대전·세종·충남도회</option>
+                        <option value="55">광주·전남도회</option>
+                        <option value="25">인천시회</option>
+                        <option value="77">강원특별자치도회</option>
+                        <option value="66">전북도회</option>
+                        <option value="88">충북도회</option>
+                        <option value="99">제주특별자치도회</option>
+                    </select>
+                </div>
+<!--                    <input type="text" class="form-control" id="searchSido" name="searchSido">-->
+                <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#confirmationModal">Google Sheet 에 저장하기</button>
+            </form>
+        </div>
+    </div>
+    <br><br>
+    <footer>
+        <address>
+            <p>Gangsan21 M&A</p>
+            <p>[도로명] 경기 성남시 중원구 사기막골로 124 (SKn테크노파크)<br>
+                비즈센터동 7층 706호<br><br>
+                [지번] 경기도 성남시 중원구 상대원동 190-1<br>
+                비즈센터동 7층 706호</p><br>
+            <p>WEB: <a href="https://www.gangsan21.com">www.gangsan21.com</a></p>
+            <p>TEL: 02-2157-8338</p>
+            <p>FAX: 02-2179-8133</p>
+            <p>Blog: <a href="https://blog.naver.com/ghskfen347">blog.naver.com/ghskfen347</a> </p>
+        </address>
+        <br><br><br>
+        <p>© 2023 Gangsan21 M&A. All rights reserved. | Copyrighted by Carefreelife98</p>
+    </footer>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Submission</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                데이터를 Google Sheet에 저장하시겠습니까? (저장 후 해당 Sheet 으로 이동합니다.)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary" id="confirmButton">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('confirmButton').addEventListener('click', function () {
+        // Submit the form
+        document.getElementById('downloadForm').submit();
+
+        // Redirect to external link after form submission
+        setTimeout(function() {
+            window.location.href = 'https://docs.google.com/spreadsheets/d/1-xptbYIAgJtEEGfM5ePtHZmwYQWx9zOGs-DDEkKUsg4/edit#gid=0';
+        }, 500); // Adjust the timeout as necessary to ensure the form submission completes
+    });
+</script>
+</body>
+</html>
