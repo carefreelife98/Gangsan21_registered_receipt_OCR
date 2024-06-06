@@ -27,7 +27,7 @@ public class ConstructController {
     @Autowired
     private ConstructExcelService constructExcelService;
 
-    @RequestMapping(value = "/molit/download", method = RequestMethod.POST)
+    @RequestMapping(value = "/molit/download", method = RequestMethod.GET)
     public void getMOLITCorpInfos(
             @RequestParam String numOfRows,
             @RequestParam String sDate,
