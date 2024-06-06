@@ -18,4 +18,9 @@ public class ConstructFormController {
         return "construct/molit-form";
     }
 
+    @GetMapping(value = "/kica")
+    public String getKicaIndexPage() {
+        return "construct/kica-form";
+    }
+
 }

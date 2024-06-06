@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
 
-    <title>Pricing example for Bootstrap</title>
+    <title>Gang San 21 M&A 건설업체조회 페이지</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/pricing/">
 
@@ -50,7 +50,7 @@
     <div class="card-deck mb-3 text-center">
         <div class="card mb-4 box-shadow">
             <div class="card-header">
-                <h4 class="my-0 font-weight-normal">국토교통부 (Kiscon) 건설업체조회</h4>
+                <h4 class="my-0 font-weight-normal">국토교통부 (Kiscon)</h4>
             </div>
             <div class="card-body">
                 <h1 class="card-title">설정 정보 <small class="text-muted">Parameters</small></h1>
@@ -61,12 +61,12 @@
                     <li>등록 시/도 (선택)</li>
                     <li>등록 시/군/구 (선택)</li>
                 </ul>
-                <button id="molit-button" type="button" class="btn btn-lg btn-block btn-outline-primary"></button>
+                <button id="molit-button" type="button" class="btn btn-lg btn-block btn-outline-primary">건설업체 조회하기</button>
             </div>
         </div>
         <div class="card mb-4 box-shadow">
             <div class="card-header">
-                <h4 class="my-0 font-weight-normal">한국정보통신공사협회 (Kica) 건설업체조회</h4>
+                <h4 class="my-0 font-weight-normal">한국정보통신공사협회 (Kica)</h4>
             </div>
             <div class="card-body">
                 <h1 class="card-title">설정 정보 <small class="text-muted">Parameters</small></h1>
@@ -75,7 +75,7 @@
                     <li>검색조건: 상호, 대표자, 등록번호, 주소, 주력 공사분야</li>
                     <li>등록 시/도 (선택)</li>
                 </ul>
-                <button id="kica-button" type="button" class="btn btn-lg btn-block btn-outline-primary"></button>
+                <button id="kica-button" type="button" class="btn btn-lg btn-block btn-outline-primary">건설업체 조회하기</button>
             </div>
         </div>
         <div class="card mb-4 box-shadow">
@@ -116,7 +116,12 @@
 <script>
     // 국토 교통부 조회 버튼
     document.getElementById('molit-button').addEventListener('click', function() {
-        window.location.href = 'http://gangsan21-ocr.site/molit';
+        window.location.href = 'http://gangsan21-ocr.site/construct/molit';
+    });
+
+    // 한군정보통신공사협회 조회 버튼
+    document.getElementById('kica-button').addEventListener('click', function() {
+        window.location.href = 'http://gangsan21-ocr.site/construct/kica';
     });
 </script>
 
