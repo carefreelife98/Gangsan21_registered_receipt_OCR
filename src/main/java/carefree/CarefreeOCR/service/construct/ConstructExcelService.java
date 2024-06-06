@@ -121,7 +121,7 @@ public class ConstructExcelService {
 
         ValueRange body = new ValueRange().setValues(request);
         Sheets sheetsService = googleSheet.getSheetsService();
-        sheetsService.spreadsheets().values().update(KICA_SHEET_ID, "Sheet1!A1", body)
+        sheetsService.spreadsheets().values().update(KICA_SHEET_ID, "KicaSheet", body)
                 .setValueInputOption("RAW")
                 .execute();
     }
