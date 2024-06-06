@@ -49,7 +49,7 @@
 </head>
 <body>
 <div class="container" style="max-width: 600px">
-    <img src="image/gangsan21_logo.png" alt="Gangsan21 Logo" class="header-image">
+    <img src="../../static/image/gangsan21_logo.png" alt="Gangsan21 Logo" class="header-image">
     <div class="py-5 text-center">
         <h3>[국토교통부] 건설 업체 정보 엑셀 다운로드 페이지</h3>
         
@@ -58,6 +58,7 @@
         <p>등록 시/도 선택 조건값 (ex : 서울,부산,대구,인천,광주,대전,울산,세종시,경기,강원,충북,충남,전북,전남,경북,경남,제주)</p>
         <p>등록 시/군/구 선택 조건값 (ex : 과천시, 양평군, 강남구)</p>
     </div>
+    <button id="construct-home-button" type="button" class="btn btn-lg btn-block btn-outline-primary">건설정보 조회 홈</button>
     <br><br>
     <div class="row">
         <div class="col">
@@ -141,6 +142,10 @@
             window.location.href = 'https://docs.google.com/spreadsheets/d/15Mljgjc21zimCM5XWPmGTULoW93zOwjLLv-xiIezg0g/edit#gid=0';
         }, 500); // Adjust the timeout as necessary to ensure the form submission completes
     });
+
+    document.getElementById('construct-home-button').addEventListener('click', function () {
+        window.location.href = 'http://gangsan21-ocr.site/construct';
+    })
 </script>
 </body>
 </html>
