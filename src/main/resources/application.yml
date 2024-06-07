@@ -1,5 +1,6 @@
 server:
   port: 11000
+JAVA_OPTS: -Xms512m -Xmx2048m
 
 spring:
   profiles:
