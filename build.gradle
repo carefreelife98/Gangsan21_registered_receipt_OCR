@@ -40,6 +40,10 @@ dependencies {
 //	implementation 'com.google.oauth-client:google-oauth-client-jetty:1.34.1'
 	implementation 'com.google.apis:google-api-services-sheets:v4-rev20220927-2.0.0'
 	implementation("com.google.auth:google-auth-library-oauth2-http:1.14.0")
+	implementation 'io.projectreactor:reactor-core:3.5.11'
+
+	// Construct - ECIC 서비스를 위한 HTML Doc 파싱 라이브러리
+	implementation 'org.jsoup:jsoup:1.14.3'
 
 	// https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
 	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.16.1'

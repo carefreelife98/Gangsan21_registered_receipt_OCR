@@ -37,6 +37,10 @@ construct:
     url: https://ictis.kica.or.kr/construct/compList
     sheet: 1-xptbYIAgJtEEGfM5ePtHZmwYQWx9zOGs-DDEkKUsg4
 
+  ecic:
+    url: https://www.keca.or.kr/ecic/ad/ad0101.do?menuCd=6047&currentPageNo=
+    sheet: 1FSqxhsUZ9XDvMEGRYGEfFPKzCRAK8twysZhXNn3kePU
+
 
 naver:
   service:
@@ -48,6 +52,8 @@ naver:
     secretKey: cVVMY3VmVkpuZXNXeGpxWGFCUVZ3ZURvaEhkVW51a3g=
 
 google:
+  local:
+    secret: secret/gangsan21-ocr-6e01aae86a2f.json
   sheets:
     secret: gangsan21-ocr-6e01aae86a2f.json
 

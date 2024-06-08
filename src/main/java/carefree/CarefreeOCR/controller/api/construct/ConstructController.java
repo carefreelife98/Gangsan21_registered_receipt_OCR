@@ -1,5 +1,6 @@
 package carefree.CarefreeOCR.controller.api.construct;
 
+import carefree.CarefreeOCR.api.publicapi.construct.EcicService;
 import carefree.CarefreeOCR.api.publicapi.construct.KicaService;
 import carefree.CarefreeOCR.api.publicapi.construct.MolitService;
 import carefree.CarefreeOCR.service.construct.ConstructExcelService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -23,6 +25,9 @@ public class ConstructController {
 
     @Autowired
     private KicaService kicaService;
+
+    @Autowired
+    private EcicService ecicService;
 
     @Autowired
     private ConstructExcelService constructExcelService;
@@ -52,5 +57,11 @@ public class ConstructController {
         } else {
             log.error("SearchType 파라미터가 잘못 되었습니다. SearchType:[{}]", searchType);
         }
+    }
+
+    @RequestMapping(value = "/ecic/download", method = RequestMethod.GET)
+    public void getECICCorpInfos() throws GeneralSecurityException, IOException {
+        List<List<Object>> ecicData = ecicService.getEcicData();
+        constructExcelService.uploadEcicJsonToGoogleSheet(ecicData);
     }
 }

@@ -26,11 +26,11 @@ public class GoogleSheet {
 //        );
 //    }
 
-    @Value("${google.sheets.secret}")
+    @Value("${google.local.secret}")
     private String secret;
 
     public Sheets getSheetsService() throws IOException, GeneralSecurityException {
-        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream("/home/ec2-user/app/gangsan21-ocr-6e01aae86a2f.json"))
+        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream("secrets/gangsan21-ocr-287fbd2bd471.json"))
                 .createScoped(Collections.singleton("https://www.googleapis.com/auth/spreadsheets"));
 
         return new Sheets.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), credential)

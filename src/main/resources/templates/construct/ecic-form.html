@@ -51,48 +51,15 @@
 <div class="container" style="max-width: 600px">
     <img src="http://gangsan21-ocr.site/image/gangsan21_logo.png" alt="Gangsan21 Logo" class="header-image">
     <div class="py-5 text-center">
-        <h3>[한국정보통신공사협회] 정보통신공사업체 정보조회</h3>
-        
-        <p>원활한 검색 속도를 위해서 적절한 업체 수를 설정하여 주시기 바랍니다.<br>(10000개 테스트 성공)</p>
+        <h3>[한국전기공사협회] 전기공사업체 정보조회</h3>
+
     </div>
     <button id="construct-home-button" type="button" class="btn btn-lg btn-block btn-outline-primary">건설정보 조회 홈</button>
     <br><br>
     <div class="row">
         <div class="col">
-            <form id="downloadForm" action="/construct/info/kica/download" method="get">
-                <div class="form-group">
-                    <label for="size">탐색할 업체 수</label>
-                    <input type="text" class="form-control" id="size" name="size" required>
-                </div>
-                <div class="form-group">
-                    <label for="searchType">검색 타입 (Optional)</label>
-                    <input type="text" class="form-control" id="searchType" name="searchType">
-                </div>
-                <div class="form-group">
-                    <label for="searchText">검색어 입력 (Optional)</label>
-                    <input type="text" class="form-control" id="searchText" name="searchText">
-                </div>
-                <div class="form-group">
-                    <label for="searchSido">등록 시/도 (Optional)</label>
-                </div>
-                <div>
-                    <select class="form-control" id="searchSido" title="시·도회 선택" name="searchSido">
-                        <option value="">전체</option>-->
-                        <option value="00">서울시회</option>
-                        <option value="22">경기도회</option>
-                        <option value="11">부산·울산·경남도회</option>
-                        <option value="33">대구·경북도회</option>
-                        <option value="44">대전·세종·충남도회</option>
-                        <option value="55">광주·전남도회</option>
-                        <option value="25">인천시회</option>
-                        <option value="77">강원특별자치도회</option>
-                        <option value="66">전북도회</option>
-                        <option value="88">충북도회</option>
-                        <option value="99">제주특별자치도회</option>
-                    </select>
-                </div>
-                <br><br>
-<!--                    <input type="text" class="form-control" id="searchSido" name="searchSido">-->
+            <form id="downloadForm" action="/construct/info/ecic/download" method="get">
+                <h3>Parameters are not required !</h3>
                 <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#confirmationModal">Google Sheet 에 저장하기</button>
             </form>
         </div>
@@ -145,7 +112,7 @@
 
         // Redirect to external link after form submission
         setTimeout(function() {
-            window.open('https://docs.google.com/spreadsheets/d/1-xptbYIAgJtEEGfM5ePtHZmwYQWx9zOGs-DDEkKUsg4/edit#gid=0');
+            window.open('https://docs.google.com/spreadsheets/d/1FSqxhsUZ9XDvMEGRYGEfFPKzCRAK8twysZhXNn3kePU/edit#gid=0');
         }, 500); // Adjust the timeout as necessary to ensure the form submission completes
     });
 

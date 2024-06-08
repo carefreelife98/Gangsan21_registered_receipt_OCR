@@ -23,4 +23,8 @@ public class ConstructFormController {
         return "construct/kica-form";
     }
 
+    @GetMapping(value = "/ecic")
+    public String getEcicIndexPage() {
+        return "construct/ecic-form";
+    }
 }

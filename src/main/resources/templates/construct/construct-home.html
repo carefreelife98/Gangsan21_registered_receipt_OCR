@@ -104,7 +104,7 @@
                     <li>등록 시/도 (선택)</li>
                     <li>등록 시/군/구 (선택)</li>
                 </ul>
-                <button id="molit-button" type="button" class="btn btn-lg btn-block btn-outline-primary">건설업체 조회하기</button>
+                <button id="molit-button" type="button" class="btn btn-lg btn-block btn-outline-primary">업체 조회하기</button>
             </div>
         </div>
         <div class="card mb-4 box-shadow">
@@ -125,23 +125,19 @@
                     </li>
                     <li>등록 시/도 (선택)</li>
                 </ul>
-                <button id="kica-button" type="button" class="btn btn-lg btn-block btn-outline-primary">건설업체 조회하기</button>
+                <button id="kica-button" type="button" class="btn btn-lg btn-block btn-outline-primary">업체 조회하기</button>
             </div>
         </div>
         <div class="card mb-4 box-shadow">
             <div class="card-header">
-                <h4 class="my-0 font-weight-normal">temp 건설업체조회</h4>
+                <h4 class="my-0 font-weight-normal">한국전기공사협회 (ECIC)</h4>
             </div>
             <div class="card-body">
                 <h1 class="card-title">설정 정보 <small class="text-muted">Parameters</small></h1>
                 <ul class="list-unstyled mt-3 mb-4">
-                    <li>-</li>
-                    <li>-</li>
-                    <li>-</li>
-                    <li>-</li>
-                    <li>-</li>
+                    <li>파라미터 없이 호출 가능합니다.</li>
                 </ul>
-                <button id="temp-button" type="button" class="btn btn-lg btn-block btn-outline-primary"></button>
+                <button id="ecic-button" type="button" class="btn btn-lg btn-block btn-outline-primary">업체 조회하기</button>
             </div>
         </div>
     </div>
@@ -169,9 +165,14 @@
         window.location.href = 'http://gangsan21-ocr.site/construct/molit';
     });
 
-    // 한군정보통신공사협회 조회 버튼
+    // 한국정보통신공사협회 조회 버튼
     document.getElementById('kica-button').addEventListener('click', function() {
         window.location.href = 'http://gangsan21-ocr.site/construct/kica';
+    });
+
+    // 한국전기공사협회 조회 버튼
+    document.getElementById('ecic-button').addEventListener('click', function() {
+        window.location.href = 'http://gangsan21-ocr.site/construct/ecic';
     });
 </script>
 

@@ -3,6 +3,7 @@ package carefree.CarefreeOCR.service.construct;
 import carefree.CarefreeOCR.api.GoogleSheet;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.*;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,9 @@ public class ConstructExcelService {
     @Value("${construct.kica.sheet}")
     private String KICA_SHEET_ID;
 
+    @Value("${construct.ecic.sheet}")
+    private String ECIC_SHEET_ID;
+
     @Autowired
     private GoogleSheet googleSheet;
 
@@ -39,23 +43,36 @@ public class ConstructExcelService {
     );
 
     public void uploadMolitJsonToGoogleSheet(String jsonString, Integer numOfRows) throws IOException, GeneralSecurityException {
+        final int MAX_ROWS = 10000;
+
+        Sheets sheetsService = googleSheet.getSheetsService();
+        // 시트 기본 행수는 999 이므로 그 이상의 데이터가 요구되면 Row 수를 늘려주어야 한다.
+        if (numOfRows >= 900) {
+            Integer sheetId = sheetsService.spreadsheets().get(MOLIT_SHEET_ID).execute().getSheets().get(0).getProperties().getSheetId();
+            constructExcelUtilService.addRowsToSheet(sheetsService, MOLIT_SHEET_ID, sheetId, numOfRows + 5);
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode root = objectMapper.readTree(jsonString);
         JsonNode items = root.path("response").path("body").path("items").path("item");
 
-        Sheets sheetsService = googleSheet.getSheetsService();
+        int totalChunks = (int) Math.ceil((double) numOfRows / MAX_ROWS);
 
-        // 시트 기본 행수는 999 이므로 그 이상의 데이터가 요구되면 Row 수를 늘려주어야 한다.
-        if (numOfRows >= 900) {
-            Integer sheetId =
-                    sheetsService
-                    .spreadsheets().get(MOLIT_SHEET_ID).execute()
-                    .getSheets().get(0).getProperties().getSheetId();
+        for (int chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+            int startRow = chunkIndex * MAX_ROWS;
+            int endRow = Math.min(startRow + MAX_ROWS, numOfRows);
 
-            constructExcelUtilService.addRowsToSheet(sheetsService, MOLIT_SHEET_ID, sheetId, numOfRows + 5);
+            JsonNode chunkItems = objectMapper.createArrayNode();
+            for (int i = startRow; i < endRow; i++) {
+                ((ArrayNode) chunkItems).add(items.get(i));
+            }
+
+            uploadChunkToGoogleSheet(sheetsService, chunkItems, startRow, endRow - startRow);
         }
+    }
 
-        // 각 행별 구분 요소 추가 (헤더)
+    private void uploadChunkToGoogleSheet(Sheets sheetsService, JsonNode items, int startRowIndex, Integer numOfRows) throws IOException, GeneralSecurityException {
+
         List<Request> requests = new ArrayList<>();
         List<CellData> headerRow = new ArrayList<>();
         Iterator<String> fieldNames = items.get(0).fieldNames();
@@ -82,7 +99,7 @@ public class ConstructExcelService {
                 .setFields("userEnteredValue")));
 
         // 헤더 밑의 행부터 데이터 인입.
-        int rowNum = 1;
+        int rowNum = startRowIndex + 2; // Start from the appropriate row index
         for (JsonNode item : items) {
             List<CellData> row = new ArrayList<>();
             fieldNames = item.fieldNames();
@@ -106,6 +123,7 @@ public class ConstructExcelService {
         BatchUpdateSpreadsheetRequest batchUpdateRequest = new BatchUpdateSpreadsheetRequest().setRequests(requests);
         sheetsService.spreadsheets().batchUpdate(MOLIT_SHEET_ID, batchUpdateRequest).execute();
     }
+
 
     public void uploadKicaJsonToGoogleSheet(String jsonString, int size) throws IOException, GeneralSecurityException {
         Sheets sheetsService = googleSheet.getSheetsService();
@@ -145,6 +163,15 @@ public class ConstructExcelService {
 
         ValueRange body = new ValueRange().setValues(request);
         sheetsService.spreadsheets().values().update(KICA_SHEET_ID, "KicaSheet", body)
+                .setValueInputOption("RAW")
+                .execute();
+    }
+
+    public void uploadEcicJsonToGoogleSheet(List<List<Object>> values) throws IOException, GeneralSecurityException {
+        Sheets sheetsService = googleSheet.getSheetsService();
+        ValueRange body = new ValueRange().setValues(values);
+        AppendValuesResponse result = sheetsService.spreadsheets().values()
+                .append(ECIC_SHEET_ID, "ECICSheet", body)
                 .setValueInputOption("RAW")
                 .execute();
     }
