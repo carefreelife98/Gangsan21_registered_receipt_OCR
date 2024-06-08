@@ -62,6 +62,7 @@ public class ConstructController {
     @RequestMapping(value = "/ecic/download", method = RequestMethod.GET)
     public void getECICCorpInfos() throws GeneralSecurityException, IOException {
         List<List<Object>> ecicData = ecicService.getEcicData();
-        constructExcelService.uploadEcicJsonToGoogleSheet(ecicData);
+        log.info(ecicData.toString());
+//        constructExcelService.uploadEcicJsonToGoogleSheet(ecicData);
     }
 }

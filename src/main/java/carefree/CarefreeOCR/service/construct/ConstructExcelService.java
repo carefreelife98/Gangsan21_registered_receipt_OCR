@@ -170,8 +170,7 @@ public class ConstructExcelService {
     public void uploadEcicJsonToGoogleSheet(List<List<Object>> values) throws IOException, GeneralSecurityException {
         Sheets sheetsService = googleSheet.getSheetsService();
         ValueRange body = new ValueRange().setValues(values);
-        AppendValuesResponse result = sheetsService.spreadsheets().values()
-                .append(ECIC_SHEET_ID, "ECICSheet", body)
+        sheetsService.spreadsheets().values().update(ECIC_SHEET_ID, "ECICSheet", body)
                 .setValueInputOption("RAW")
                 .execute();
     }

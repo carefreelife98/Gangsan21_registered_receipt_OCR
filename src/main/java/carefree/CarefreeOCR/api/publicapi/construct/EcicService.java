@@ -16,7 +16,7 @@ import java.util.Objects;
 public class EcicService {
 
     @Value("${construct.ecic.url}")
-    private String apiUrl;
+    private String baseUrl;
 
     public List<List<Object>> getEcicData() {
         List<List<Object>> data = new ArrayList<>();
@@ -24,7 +24,7 @@ public class EcicService {
         try {
             // HTTP GET 요청 보내기 (총 페이지 수 계산 위함)
             RestTemplate restTemplate = new RestTemplate();
-            String preResponse = restTemplate.getForObject(apiUrl + "1", String.class);
+            String preResponse = restTemplate.getForObject(baseUrl + "1", String.class);
 
             // Jsoup을 사용하여 HTML 파싱
             Document tempDoc = Jsoup.parse(preResponse);
@@ -44,9 +44,10 @@ public class EcicService {
                 pageNo += 1;
             }
 
-            for (int i = 1; i == pageNo; i++) {
+            for (int i = 1; i < pageNo; i++) {
                 // HTTP GET 요청 보내기 (총 페이지 수 계산 위함)
-                String response = restTemplate.getForObject(apiUrl + i, String.class);
+                String url = baseUrl + i;
+                String response = restTemplate.getForObject(url, String.class);
 
                 // Jsoup을 사용하여 HTML 파싱
                 Document doc = Jsoup.parse(response);
@@ -61,15 +62,18 @@ public class EcicService {
                     if (tbody != null) {
                         // <tbody> 내의 필드들 추출 (여기서는 <tr> 기준으로 추출)
                         Elements rows = tbody.select("tr");
-
-                        // 추출한 <tr>들을 처리하여 데이터 리스트 생성
-                        for (Element row : rows) {
-                            Elements tds = row.select("td");
-                            List<Object> rowData = new ArrayList<>();
-                            for (Element td : tds) {
-                                rowData.add(td.text());
+                        if (rows != null) {
+                            // 추출한 <tr>들을 처리하여 데이터 리스트 생성
+                            for (Element row : rows) {
+                                Elements tds = row.select("td");
+                                if (tds != null) {
+                                    List<Object> rowData = new ArrayList<>();
+                                    for (Element td : tds) {
+                                        rowData.add(td.text());
+                                    }
+                                    data.add(rowData);
+                                }
                             }
-                            data.add(rowData);
                         }
                     } else {
                         System.out.println("<tbody> 태그를 찾을 수 없습니다.");
@@ -78,8 +82,6 @@ public class EcicService {
                     System.out.println("클래스명이 'txtC'인 테이블을 찾을 수 없습니다.");
                 }
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
