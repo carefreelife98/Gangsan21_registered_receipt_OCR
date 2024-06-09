@@ -25,7 +25,7 @@ public class ConstructExcelService {
     @Value("${construct.molit.sheet}")
     private String MOLIT_SHEET_ID;
 
-    @Value("${construct.molit.sheet}")
+    @Value("${construct.molit.name}")
     private String MOLIT_SHEET_NM;
 
     @Value("${construct.kica.sheet}")

@@ -44,19 +44,34 @@ public class ConstructController {
             @RequestParam(required = false) String ncrAreaName,
             @RequestParam(required = false) String ncrAreaDetailName) throws GeneralSecurityException, IOException {
 
-        String molitData = molitService.getMolitData(numOfRows.trim(), sDate, eDate, ncrAreaName.trim(), ncrAreaDetailName.trim());
+        if (ncrAreaName != null) {
+            ncrAreaName = ncrAreaName.trim();
+        }
+
+        if (ncrAreaDetailName != null) {
+            ncrAreaDetailName = ncrAreaDetailName.trim();
+        }
+
+        String molitData = molitService.getMolitData(numOfRows.trim(), sDate, eDate, ncrAreaName, ncrAreaDetailName);
         constructExcelService.uploadMolitJsonToGoogleSheet(molitData, Integer.parseInt(numOfRows.trim()));
     }
 
     @RequestMapping(value = "/kica/download", method = RequestMethod.GET)
     public void getKICACorpInfos(
             @RequestParam String size,
-            @RequestParam(required = false) String searchType,
+            @RequestParam(required = false, defaultValue = "1") String searchType,
             @RequestParam(required = false) String searchText,
             @RequestParam(required = false) String searchSido) throws GeneralSecurityException, IOException {
 
         if (searchType.length() == 1 || searchType.isEmpty()) {
-            String kicaData = kicaService.getKicaData(size.trim(), searchType.trim(), searchText.trim(), searchSido.trim());
+            if (searchText != null) {
+                searchText = searchText.trim();
+            }
+
+            if (searchSido != null) {
+                searchSido = searchSido.trim();
+            }
+            String kicaData = kicaService.getKicaData(size.trim(), searchType, searchText, searchSido);
             constructExcelService.uploadKicaJsonToGoogleSheet(kicaData, Integer.parseInt(size.trim()));
         } else {
             log.error("SearchType 파라미터가 잘못 되었습니다. SearchType:[{}]", searchType);
