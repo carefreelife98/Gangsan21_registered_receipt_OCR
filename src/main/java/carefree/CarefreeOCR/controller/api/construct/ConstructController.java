@@ -1,6 +1,7 @@
 package carefree.CarefreeOCR.controller.api.construct;
 
 import carefree.CarefreeOCR.api.publicapi.construct.EcicService;
+import carefree.CarefreeOCR.api.publicapi.construct.EkffaService;
 import carefree.CarefreeOCR.api.publicapi.construct.KicaService;
 import carefree.CarefreeOCR.api.publicapi.construct.MolitService;
 import carefree.CarefreeOCR.service.construct.ConstructExcelService;
@@ -28,6 +29,9 @@ public class ConstructController {
 
     @Autowired
     private EcicService ecicService;
+
+    @Autowired
+    private EkffaService ekffaService;
 
     @Autowired
     private ConstructExcelService constructExcelService;
@@ -63,6 +67,13 @@ public class ConstructController {
     public void getECICCorpInfos() throws GeneralSecurityException, IOException {
         List<List<Object>> ecicData = ecicService.getEcicData();
         log.info(ecicData.toString());
-//        constructExcelService.uploadEcicJsonToGoogleSheet(ecicData);
+        constructExcelService.uploadEcicJsonToGoogleSheet(ecicData);
+    }
+
+    @RequestMapping(value = "/ekffa/download", method = RequestMethod.GET)
+    public void getEkffaCorpInfos() throws GeneralSecurityException, IOException {
+        List<List<Object>> ekffaData = ekffaService.getEkffaData();
+        log.info(ekffaData.toString());
+        constructExcelService.uploadEkffaJsonToGoogleSheet(ekffaData);
     }
 }

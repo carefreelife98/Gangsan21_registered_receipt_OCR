@@ -26,20 +26,31 @@ spring:
             client-secret: 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
 
 construct:
+  default:
+    sheet: 1zccSFdH0cgYYPTq4eewBU3m6QRDAVD5qBthEWWagt8E
+
   molit:
     url: http://apis.data.go.kr/1613000/ConAdminInfoSvc1/GongsiReg
     secretKey:
       enc: 5UwPm1xeKmH%2BPT4ORB0ogz2N5lGFCZNsAqzVuRptg1SLJnDIjD%2FxhPh9F33HKje4rvbwFZnqAL0qD2VUb1EcVw%3D%3D
       dec: 5UwPm1xeKmH+PT4ORB0ogz2N5lGFCZNsAqzVuRptg1SLJnDIjD/xhPh9F33HKje4rvbwFZnqAL0qD2VUb1EcVw==
     sheet: 15Mljgjc21zimCM5XWPmGTULoW93zOwjLLv-xiIezg0g
+    name: 국토교통부
 
   kica:
     url: https://ictis.kica.or.kr/construct/compList
     sheet: 1-xptbYIAgJtEEGfM5ePtHZmwYQWx9zOGs-DDEkKUsg4
+    name: 한국정보통신공사협회
 
   ecic:
     url: https://www.keca.or.kr/ecic/ad/ad0101.do?menuCd=6047&currentPageNo=
     sheet: 1FSqxhsUZ9XDvMEGRYGEfFPKzCRAK8twysZhXNn3kePU
+    name: 한국전기공사협회
+
+  ekffa:
+    url: http://www.ekffa.or.kr/fe/member/NR_listCompany.do?upKindcode=10&_m=41&searchKey=1000&currentPage=
+    sheet: 1uQbcIUMZjdpNdsV5Uo8SBZYdj7oNatXII8jmgNgHWlw
+    name: 한국소방시설협회
 
 
 naver:

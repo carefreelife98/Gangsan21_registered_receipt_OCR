@@ -140,6 +140,18 @@
                 <button id="ecic-button" type="button" class="btn btn-lg btn-block btn-outline-primary">업체 조회하기</button>
             </div>
         </div>
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">한국소방시설협회 (EKFFA)</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title">설정 정보 <small class="text-muted">Parameters</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>파라미터 없이 호출 가능합니다.</li>
+                </ul>
+                <button id="ekffa-button" type="button" class="btn btn-lg btn-block btn-outline-primary">업체 조회하기</button>
+            </div>
+        </div>
     </div>
 
     <footer class="mx-auto text-center">
@@ -173,6 +185,11 @@
     // 한국전기공사협회 조회 버튼
     document.getElementById('ecic-button').addEventListener('click', function() {
         window.location.href = 'http://gangsan21-ocr.site/construct/ecic';
+    });
+
+    // 한국소방시설협회 조회 버튼
+    document.getElementById('ekffa-button').addEventListener('click', function() {
+        window.location.href = 'http://gangsan21-ocr.site/construct/ekffa';
     });
 </script>
 

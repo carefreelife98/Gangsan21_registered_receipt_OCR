@@ -27,4 +27,9 @@ public class ConstructFormController {
     public String getEcicIndexPage() {
         return "construct/ecic-form";
     }
+
+    @GetMapping(value = "/ekffa")
+    public String getEkffaIndexPage() {
+        return "construct/ekffa-form";
+    }
 }

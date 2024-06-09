@@ -19,14 +19,32 @@ import java.util.*;
 @Service
 public class ConstructExcelService {
 
+    @Value("${construct.default.sheet}")
+    private String DEFAULT_SHEET_ID;
+
     @Value("${construct.molit.sheet}")
     private String MOLIT_SHEET_ID;
+
+    @Value("${construct.molit.sheet}")
+    private String MOLIT_SHEET_NM;
 
     @Value("${construct.kica.sheet}")
     private String KICA_SHEET_ID;
 
+    @Value("${construct.kica.name}")
+    private String KICA_SHEET_NM;
+
     @Value("${construct.ecic.sheet}")
     private String ECIC_SHEET_ID;
+
+    @Value("${construct.ecic.name}")
+    private String ECIC_SHEET_NM;
+
+    @Value("${construct.ekffa.sheet}")
+    private String EKFFA_SHEET_ID;
+
+    @Value("${construct.ekffa.name}")
+    private String EKFFA_SHEET_NM;
 
     @Autowired
     private GoogleSheet googleSheet;
@@ -47,10 +65,15 @@ public class ConstructExcelService {
 
         Sheets sheetsService = googleSheet.getSheetsService();
         // 시트 기본 행수는 999 이므로 그 이상의 데이터가 요구되면 Row 수를 늘려주어야 한다.
-        if (numOfRows >= 900) {
-            Integer sheetId = sheetsService.spreadsheets().get(MOLIT_SHEET_ID).execute().getSheets().get(0).getProperties().getSheetId();
-            constructExcelUtilService.addRowsToSheet(sheetsService, MOLIT_SHEET_ID, sheetId, numOfRows + 5);
-        }
+        Optional<Sheet> sheet =
+                sheetsService.spreadsheets().get(DEFAULT_SHEET_ID).execute().getSheets()
+                        .stream()
+                        .filter(s -> MOLIT_SHEET_NM.equals(s.getProperties().getTitle()))
+                        .findFirst();
+
+        Integer sheetId = sheet.map(s -> s.getProperties().getSheetId()).orElse(null);
+
+        constructExcelUtilService.addRowsToSheet(sheetsService, DEFAULT_SHEET_ID, sheetId, numOfRows + 5);
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode root = objectMapper.readTree(jsonString);
@@ -67,11 +90,11 @@ public class ConstructExcelService {
                 ((ArrayNode) chunkItems).add(items.get(i));
             }
 
-            uploadChunkToGoogleSheet(sheetsService, chunkItems, startRow, endRow - startRow);
+            uploadChunkToGoogleSheet(sheetsService, chunkItems, startRow, endRow - startRow, sheetId);
         }
     }
 
-    private void uploadChunkToGoogleSheet(Sheets sheetsService, JsonNode items, int startRowIndex, Integer numOfRows) throws IOException, GeneralSecurityException {
+    private void uploadChunkToGoogleSheet(Sheets sheetsService, JsonNode items, int startRowIndex, Integer numOfRows, Integer sheetId) throws IOException, GeneralSecurityException {
 
         List<Request> requests = new ArrayList<>();
         List<CellData> headerRow = new ArrayList<>();
@@ -84,7 +107,7 @@ public class ConstructExcelService {
         }
 
         requests.add(new Request().setUpdateCells(new UpdateCellsRequest()
-                .setStart(new GridCoordinate().setSheetId(0).setRowIndex(0).setColumnIndex(0))
+                .setStart(new GridCoordinate().setSheetId(sheetId).setRowIndex(0).setColumnIndex(0))
                 .setRows(Collections.singletonList(new RowData().setValues(staticRow)))
                 .setFields("userEnteredValue")));
 
@@ -94,7 +117,7 @@ public class ConstructExcelService {
         }
 
         requests.add(new Request().setUpdateCells(new UpdateCellsRequest()
-                .setStart(new GridCoordinate().setSheetId(0).setRowIndex(1).setColumnIndex(1))
+                .setStart(new GridCoordinate().setSheetId(sheetId).setRowIndex(1).setColumnIndex(1))
                 .setRows(Collections.singletonList(new RowData().setValues(headerRow)))
                 .setFields("userEnteredValue")));
 
@@ -115,17 +138,18 @@ public class ConstructExcelService {
                 row.add(cellData);
             }
             requests.add(new Request().setUpdateCells(new UpdateCellsRequest()
-                    .setStart(new GridCoordinate().setSheetId(0).setRowIndex(rowNum++).setColumnIndex(0))
+                    .setStart(new GridCoordinate().setSheetId(sheetId).setRowIndex(rowNum++).setColumnIndex(0))
                     .setRows(Collections.singletonList(new RowData().setValues(row)))
                     .setFields("userEnteredValue")));
         }
 
         BatchUpdateSpreadsheetRequest batchUpdateRequest = new BatchUpdateSpreadsheetRequest().setRequests(requests);
-        sheetsService.spreadsheets().batchUpdate(MOLIT_SHEET_ID, batchUpdateRequest).execute();
+        sheetsService.spreadsheets().batchUpdate(DEFAULT_SHEET_ID, batchUpdateRequest).execute();
     }
 
 
     public void uploadKicaJsonToGoogleSheet(String jsonString, int size) throws IOException, GeneralSecurityException {
+
         Sheets sheetsService = googleSheet.getSheetsService();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -134,12 +158,15 @@ public class ConstructExcelService {
 
         // 시트 기본 행수는 999 이므로 그 이상의 데이터가 요구되면 Row 수를 늘려주어야 한다.
         if (size >= 900) {
-            Integer sheetId =
-                    sheetsService
-                            .spreadsheets().get(KICA_SHEET_ID).execute()
-                            .getSheets().get(0).getProperties().getSheetId();
+            Optional<Sheet> sheet =
+                    sheetsService.spreadsheets().get(DEFAULT_SHEET_ID).execute().getSheets()
+                    .stream()
+                            .filter(s -> KICA_SHEET_NM.equals(s.getProperties().getTitle()))
+                            .findFirst();
 
-            constructExcelUtilService.addRowsToSheet(sheetsService, KICA_SHEET_ID, sheetId, size + 5);
+            Integer sheetId = sheet.map(s -> s.getProperties().getSheetId()).orElse(null);
+
+            constructExcelUtilService.addRowsToSheet(sheetsService, DEFAULT_SHEET_ID, sheetId, size + 5);
         }
 
         List<List<Object>> request = new ArrayList<>();
@@ -162,7 +189,7 @@ public class ConstructExcelService {
         }
 
         ValueRange body = new ValueRange().setValues(request);
-        sheetsService.spreadsheets().values().update(KICA_SHEET_ID, "KicaSheet", body)
+        sheetsService.spreadsheets().values().update(DEFAULT_SHEET_ID, KICA_SHEET_NM, body)
                 .setValueInputOption("RAW")
                 .execute();
     }
@@ -170,7 +197,15 @@ public class ConstructExcelService {
     public void uploadEcicJsonToGoogleSheet(List<List<Object>> values) throws IOException, GeneralSecurityException {
         Sheets sheetsService = googleSheet.getSheetsService();
         ValueRange body = new ValueRange().setValues(values);
-        sheetsService.spreadsheets().values().update(ECIC_SHEET_ID, "ECICSheet", body)
+        sheetsService.spreadsheets().values().update(DEFAULT_SHEET_ID, ECIC_SHEET_NM, body)
+                .setValueInputOption("RAW")
+                .execute();
+    }
+
+    public void uploadEkffaJsonToGoogleSheet(List<List<Object>> values) throws IOException, GeneralSecurityException {
+        Sheets sheetsService = googleSheet.getSheetsService();
+        ValueRange body = new ValueRange().setValues(values);
+        sheetsService.spreadsheets().values().update(DEFAULT_SHEET_ID, EKFFA_SHEET_NM, body)
                 .setValueInputOption("RAW")
                 .execute();
     }
