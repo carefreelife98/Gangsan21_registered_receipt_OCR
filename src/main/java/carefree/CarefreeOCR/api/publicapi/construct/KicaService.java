@@ -48,7 +48,7 @@ public class KicaService {
                 .bodyToMono(String.class)
                 .block();
 
-        log.info(response);
+//        log.info(response);
         return response;
     }
 }

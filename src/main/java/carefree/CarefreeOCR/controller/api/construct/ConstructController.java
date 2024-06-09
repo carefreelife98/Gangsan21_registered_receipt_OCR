@@ -81,14 +81,14 @@ public class ConstructController {
     @RequestMapping(value = "/ecic/download", method = RequestMethod.GET)
     public void getECICCorpInfos() throws GeneralSecurityException, IOException {
         List<List<Object>> ecicData = ecicService.getEcicData();
-        log.info(ecicData.toString());
+//        log.info(ecicData.toString());
         constructExcelService.uploadEcicJsonToGoogleSheet(ecicData);
     }
 
     @RequestMapping(value = "/ekffa/download", method = RequestMethod.GET)
     public void getEkffaCorpInfos() throws GeneralSecurityException, IOException {
         List<List<Object>> ekffaData = ekffaService.getEkffaData();
-        log.info(ekffaData.toString());
+//        log.info(ekffaData.toString());
         constructExcelService.uploadEkffaJsonToGoogleSheet(ekffaData);
     }
 }
