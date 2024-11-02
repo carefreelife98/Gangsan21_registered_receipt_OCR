@@ -14,8 +14,9 @@ ERROR_LOG="$PROJECT_ROOT/error.log"
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
 
 TIME_NOW=$(date +%c)
-
-kill "$(lsof -t -i:11000)"
+if [ "$(lsof -t -i:11000)" ]; then
+  kill "$(lsof -t -i:11000)"
+fi
 
 chmod +x $JAR_FILE
 
