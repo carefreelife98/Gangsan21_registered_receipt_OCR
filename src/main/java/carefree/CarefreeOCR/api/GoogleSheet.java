@@ -30,7 +30,7 @@ public class GoogleSheet {
     private String secret;
 
     public Sheets getSheetsService() throws IOException, GeneralSecurityException {
-        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream("secrets/gangsan21-ocr-287fbd2bd471.json"))
+        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream("gangsan21-ocr-287fbd2bd471.json"))
                 .createScoped(Collections.singleton("https://www.googleapis.com/auth/spreadsheets"));
 
         return new Sheets.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), credential)
